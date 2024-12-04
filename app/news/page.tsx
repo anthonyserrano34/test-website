@@ -16,7 +16,7 @@ const inter = Inter({ subsets: ['latin'] })
 const newsItems = [
 	{
 		id: 12,
-		date: "Nov 2024",
+		date: "Dec 2024",
 		title: "Altwy appoints Peter Mahlmeister as Chief Strategy Officer",
 		contentType: "text",
 		content: `Altwy is pleased to announce the **appointment of Peter Mahlmeister** as **Chief Strategy Officer (CSO)**. With over 30 years of experience in the IT industry, Peter will play a critical role in shaping Altwy’s strategic direction and driving its next phase of growth.
