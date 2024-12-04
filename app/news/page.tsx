@@ -15,6 +15,19 @@ const inter = Inter({ subsets: ['latin'] })
 // TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
 const newsItems = [
 	{
+		id: 12,
+		date: "Nov 2024",
+		title: "Altwy appoints Peter Mahlmeister as Chief Strategy Officer",
+		contentType: "text",
+		content: `Altwy is pleased to announce the **appointment of Peter Mahlmeister** as **Chief Strategy Officer (CSO)**. With over 30 years of experience in the IT industry, Peter will play a critical role in shaping Altwy’s strategic direction and driving its next phase of growth.
+
+Peter’s career spans a range of leadership roles at major technology companies, including Silicon Graphics/SGI, HPE, and NetApp, as well as innovative startups such as Tintri, SimpliVity, and Cohesity. His extensive knowledge of the IT ecosystem and his forward-thinking perspective will bring invaluable insights to Altwy.
+
+**Christophe Lambert**, CEO of Altwy, expressed his enthusiasm for Peter’s arrival:
+"I am delighted to welcome Peter to Altwy. Having had the privilege of working with him for over 20 years, I know firsthand the value of his strategic mindset and collaborative approach. Peter’s expertise will be a tremendous asset as we continue to scale and achieve our ambitious goals.”
+Peter Mahlmeister’s appointment underscores Altwy’s commitment to building a strong leadership team equipped to navigate the complexities of the evolving IT landscape.`,
+	},
+	{
 		id: 1,
 		date: "Nov 2024",
 		title: "Altwy at Slush 2024",

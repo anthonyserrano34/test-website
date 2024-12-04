@@ -28,6 +28,14 @@ const ceos = [
     experience: ["Leadership", "Strategic advisor", "Cloud computing", "IT market", "Team building"],
     image: "/company/christophe_lambert.jpg",
     linkedin: "https://www.linkedin.com/in/christophelambert/",
+  },
+  {
+    name: "Peter MAHLMEISTER",
+    title: "Chief Strategy Officer",
+    bio: `As a sales trainee, Peter immersed himself in the complex sales landscape of enterprise computing, mastering both direct and indirect sales strategies and understanding the intricate technology ecosystems emerging during the late 1980s. Throughout his career, Peter became known for his strategic thinking and ability to close landmark deals that helped establish NetApp's market leadership in enterprise data management. His strategic approach coupled with his teams were instrumental in driving sales during a period when NetApp, Tintri, SimpliVity and Cohesity were expanding their presence in the Cloud.`,
+    experience: ["Leadership", "Sales Ecosystem Networker", "Team builder/worker", "Strategist", "IT/Cloud landscape"],
+    image: "/company/peter_mahlmeister.jpg",
+    linkedin: "https://www.linkedin.com/in/petermahlmeister/",
   }
 ]
 
