@@ -40,6 +40,12 @@ export default function HomePage() {
 
 	const loadVideo = () => {
 		setIsVideoLoaded(true)
+		if (window.gtag) {
+			window.gtag('event', 'played_video_homepage', {
+				event_category: 'engagement',
+				event_label: 'User played the video on the homepage',
+			});
+		}
 	}
 
 	const logos = [
@@ -185,7 +191,7 @@ export default function HomePage() {
 								animate={{ opacity: 1 }}
 								transition={{ duration: 0.5, delay: 0.7 }}
 							>
-								Datacenter Efficency
+								Datacenter Efficiency
 							</motion.span>
 						</motion.h1>
 
@@ -755,6 +761,14 @@ export default function HomePage() {
 								target="_blank"
 								rel="noopener noreferrer"
 								className="inline-flex items-center gap-2 px-8 py-3 bg-[#57e4c5] hover:bg-[#62ecce] text-white rounded-full transition-colors text-lg font-medium relative group"
+								onClick={() => {
+									if (window.gtag) {
+										window.gtag('event', 'opened_linkedin_altwy', {
+											event_category: 'engagement',
+											event_label: 'User clicked the LinkedIn button',
+										});
+									}
+								}}
 							>
 								<span className="absolute inset-0 rounded-full bg-[#57e4c5]/20 blur-lg group-hover:bg-[#57e4c5]/30 transition-colors" />
 								<Linkedin className="w-5 h-5 relative z-10" />
