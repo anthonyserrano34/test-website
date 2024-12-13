@@ -57,7 +57,8 @@ export default function HomePage() {
 	return (
 		<div className={`min-h-screen bg-[#164C4C] ${inter.className}`}>
 			{/* Navbar */}
-			<nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isNavbarTransparent ? '' : 'bg-[#164C4C]/90 backdrop-blur-md'}`}>
+			<nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isNavbarTransparent && !menuOpen ? '' : 'bg-[#164C4C]/95 backdrop-blur-md'}`}>
+
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex items-center justify-between h-16">
 						<div className="flex items-center">
@@ -90,7 +91,7 @@ export default function HomePage() {
 					</div>
 				</div>
 				{menuOpen && (
-					<div className="md:hidden">
+					<div className="md:hidden bg-[#164C4C]/95 backdrop-blur-md">
 						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
 							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Home</Link>
 							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Company</Link>

@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
 					You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. If you do this, however, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work.
 				</p>
 				<p className="mb-4">
-					To opt out of being tracked by Google Analytics across all websites, visit <a href="http://tools.google.com/dlpage/gaoptout" className="text-blue-600 hover:underline">http://tools.google.com/dlpage/gaoptout</a>.
+					To opt out of being tracked by Google Analytics across all websites, visit <a href="http://tools.google.com/dlpage/gaoptout" className="text-[#57e4c5] hover:underline">http://tools.google.com/dlpage/gaoptout</a>.
 				</p>
 			</section>
 
@@ -102,7 +102,7 @@ export default function PrivacyPolicy() {
 			<section className="mb-8">
 				<h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
 				<p className="mb-4">
-					If you have any questions about this Privacy Policy, please <Link href="/contact" className="text-blue-600 hover:underline">contact us here.</Link>
+					If you have any questions about this Privacy Policy, please <Link href="/contact" className="text-[#57e4c5] hover:underline">contact us here.</Link>
 				</p>
 			</section>
 		</div>
