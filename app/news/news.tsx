@@ -15,6 +15,17 @@ const inter = Inter({ subsets: ['latin'] })
 // TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
 const newsItems = [
 	{
+		id: 13,
+		date: "Dec 2024",
+		title: "Altwy secures funding from Bpifrance under the hashtag #France2030 program to accelerate the development of Altwy, the platform for next-generation data centers and AI infrastructure.",
+		contentType: "text",
+		content: `Altwy is proud to announce that it has received funding from **BPI France** as part of the **France 2030** program. This support will drive the advancement of Altwy, an innovative platform designed to revolutionize data center management and AI infrastructures.
+		
+Altwy offers cutting-edge solutions for optimizing infrastructure, **reducing energy consumption**, and enabling the seamless deployment of **artificial intelligence workloads**. Positioned as the cornerstone for **tomorrow’s AI infrastructures**, Altwy aligns with the France 2030 vision of fostering sustainable, high-performance technologies.
+
+*“This funding represents a major milestone in our mission to create smarter, greener IT solutions that address the challenges of today and tomorrow”* said **Christophe Lambert, CEO**.`,
+	},
+	{
 		id: 12,
 		date: "Dec 2024",
 		title: "Altwy appoints Peter Mahlmeister as Chief Strategy Officer",
