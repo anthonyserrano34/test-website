@@ -17,7 +17,7 @@ const newsItems = [
 	{
 		id: 13,
 		date: "Dec 2024",
-		title: "Altwy secures funding from Bpifrance under the hashtag #France2030 program to accelerate the development of Altwy, the platform for next-generation data centers and AI infrastructure.",
+		title: "Altwy secures funding from Bpifrance under the #France2030 program to accelerate the development of Altwy, the platform for next-generation data centers and AI infrastructure.",
 		contentType: "text",
 		content: `Altwy is proud to announce that it has received funding from **BPI France** as part of the **France 2030** program. This support will drive the advancement of Altwy, an innovative platform designed to revolutionize data center management and AI infrastructures.
 		
