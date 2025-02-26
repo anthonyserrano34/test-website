@@ -15,6 +15,151 @@ const inter = Inter({ subsets: ['latin'] })
 // TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
 const newsItems = [
 	{
+		id: 17,
+		date: "Feb 2025",
+		title: "Introducing the Distributed OS for Data Centers – Redefining Cloud Efficiency The Future of Cloud Computing is Here",
+		contentType: "text",
+		content: `Data centers are the backbone of our digital world, powering everything from streaming services to financial transactions. However, as demand grows, so do the challenges: skyrocketing energy costs, fragmented infrastructure, and the need for seamless scalability.
+
+What if we told you there’s a solution that not only unifies your infrastructure but also slashes energy consumption by up to 75%? Meet the Distributed OS for Data Centers, a revolutionary operating system designed to transform how we manage and scale cloud environments.
+
+What is the Distributed OS for Data Centers?
+
+The Distributed OS for Data Centers is more than just a hypervisor—it’s a comprehensive operating system that treats your entire data center as a single, unified entity. Whether you’re running virtual machines, containers, or web services, this OS abstracts away complexity, enabling seamless management across multiple platforms and architectures. It’s built to optimize resource utilization, enhance scalability, and deliver unparalleled energy efficiency.
+
+**Key Features** of the Distributed OS
+
+**1. Unified Resource Pooling**
+
+The Distributed OS consolidates compute, storage, and networking resources across all physical and virtual machines into a single logical pool. This abstraction allows you to allocate resources dynamically based on workload demands.
+
+**2. Multi-Platform Support**
+
+Designed for heterogeneous environments, it supports x86, ARM, and emerging architectures.
+
+**3. Energy Efficiency at Scale**
+
+By intelligently managing workloads and reducing idle power consumption, the Distributed OS can cut data center energy usage by up to 75%, making it a game-changer for sustainability.
+
+**4. Self-Healing Infrastructure**
+
+Built-in fault tolerance ensures high availability by automatically detecting failures and reallocating resources without disrupting operations.
+
+**5. Accelerated App Deployment**
+
+Being able to deploy 3rd party applications for the Data Center from the ALTWY integrated Market Place
+
+**6. Enhanced Security & Isolation**
+
+Logical isolation between workloads ensures robust security in multi-tenant environments while maintaining high performance.
+
+**__Why Call It a “Distributed OS”?__**
+Traditional operating systems manage individual machines; the Distributed OS manages entire data centers as if they were one machine. This paradigm shift allows organizations to:
+
+• Scale Effortlessly: Deploy workloads across geographically distributed data centers  while maintaining low latency and high performance.
+
+• Simplify Operations: Manage complex infrastructures through a single interface with unified monitoring and orchestration tools.
+
+• Optimize Costs: Reduce hardware sprawl and energy consumption while improving resource utilization.
+
+**How It’s Changing the Game**
+
+The Distributed OS for Data Centers is designed to address some of the most pressing challenges in cloud computing:
+
+1. Sustainability: By reducing energy consumption significantly, it helps organizations meet their sustainability goals while lowering operational costs.
+
+2. Resilience: Its distributed architecture ensures continuous availability even in the face of hardware failures or regional outages.
+
+3. Flexibility: Whether you’re running legacy applications or modern Microservices, this OS adapts to your needs without requiring costly rearchitecting.
+
+**Real-World Impact**
+
+Imagine running thousands of virtual machines and containers across multiple locations without worrying about resource bottlenecks or downtime. Picture cutting your energy bills by three-fourths while delivering faster services to your customers - this is what ALTWY distributed OS will do.
+
+**Conclusion: The Operating System of Tomorrow**
+
+The Distributed OS for Data Centers is more than just software—it’s a movement toward smarter, greener cloud computing. By unifying platforms, optimizing resources, and enabling seamless scalability, it’s poised to become the foundation of next-generation data centers.
+
+Are you ready to join the revolution? Let’s build a sustainable future for cloud computing together!
+
+**Peter Mahlmeister**
+**CSO Altwy**`,
+	},
+	{
+		id: 16,
+		date: "Feb 2025",
+		title: "🎉 Altwy turns 2 today! 🎉",
+		contentType: "text",
+		content: `Two exciting years of building a sovereign #cloud management solution—one that brings more efficiency, more flexibility, and most importantly, lower #energy consumption.
+
+💡 The market is shifting in our favor
+✅ The #AI boom is driving an urgent need for datacenter #optimization.
+✅ Broadcom’s acquisition of VMware is reshaping the industry.
+✅ More and more companies are moving away from public clouds to regain control with private infrastructures.
+✅ #Sovereignty and energy efficiency are becoming top strategic priorities.
+
+🔥 That’s why we’re launching version 2 of our MVP 🔥
+
+Packed with new features to help businesses navigate this cloud transformation.
+The trends are clear: intelligent, sovereign multi-cloud management is the future. Enterprises need it, and investors have a unique opportunity to back a game-changing player in this revolution.
+
+A huge thank you to everyone supporting us on this journey. The best is yet to come! 🚀
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
+		id: 15,
+		date: "Feb 2025",
+		title: "Waste Heat: A Symptom of Energy Overconsumption, Not a Solution",
+		contentType: "text",
+		content: `The demand for #cloud #infrastructure continues to grow, creating numerous opportunities for new data centers. However, poor technological choices can turn these opportunities into energy-draining liabilities. Even today, too many data centers dissipate a significant portion of their energy as waste heat, which is then inefficiently repurposed to heat swimming pools or water tanks.
+
+But waste heat recovery is a false solution:
+ - Waste heat is difficult to repurpose: It is often too diffuse, not hot enough, and requires costly infrastructure to transport and utilize.
+ - Heat demand doesn’t align with production: A data center operates 24/7, while heating needs are seasonal and intermittent.
+ - Losses are inevitable: Between capture, transport, and conversion, a large portion of this heat is simply lost.
+
+The best energy is the one directly used for computing rather than being wasted as heat. To achieve this, data centers can be designed from the start with the right technologies:
+ - #ARM processors and future #RISC-V architectures: More energy-efficient, they reduce waste and optimize performance per watt.
+ - Passive cooling and optimized ventilation: Minimizing the need for energy-intensive air conditioning.
+ - Intelligent orchestration of computing loads: Advanced workload management software like #Altwy optimizes resource usage based on demand and energy consumption.
+
+With the rise of artificial intelligence, optimizing data centers is even more critical. AI workloads are extremely energy-intensive and require efficient management to prevent excessive consumption. A platform like Altwy dynamically adjusts resources based on the real needs of training and inference algorithms, reducing energy waste while ensuring optimal performance.
+
+The good news: This approach isn’t limited to new data centers. Existing infrastructure can transition from energy-wasting radiators to more sustainable models through hardware and software upgrades. By moving from Intel and VMware to Intel and Altwy, then to Altwy and Arm, efficiency is maximized while ensuring a smooth transition to a more intelligent and sustainable computing environment.
+The future of data centers should not be oversized radiators but ultra-efficient platforms dedicated to computing and innovation.
+
+#Investors, #venture capitalists, and financial institutions have a unique opportunity to drive this transformation by supporting pioneering solutions like Altwy, shaping the next generation of sustainable and high-performance data centers.
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
+		id: 14,
+		date: "Jan 2025",
+		title: "2025: What Lies Ahead in the World of IT and Cloud",
+		contentType: "text",
+		content: `The year 2025 promises to be a **pivotal one for the IT sector**, marked by major transformations in cloud technologies, infrastructure, and energy management. At **Altwy**, we observe trends that will significantly reshape priorities for businesses and IT leaders. Here are my predictions for this critical year.
+
+**1. The rise of generative AI in enterprises** In 2025, generative AI will move from experimentation to widespread adoption. These tools will revolutionize internal processes and customer experiences, while posing significant challenges in terms of energy consumption and ethics. Companies must innovate to integrate these technologies responsibly.
+
+**2. Electricity: A scarce and valuable resource** As datacenter energy consumption continues to rise, electricity will become a critical resource. This scarcity will push businesses to adopt technologies that significantly reduce their energy footprint. Solutions like those developed by Altwy will play a key role in optimizing cloud resources and ensuring a sustainable future.
+
+**3. The shift toward private clouds and multi-cloud strategies** CIOs are increasingly questioning their reliance on public clouds. Concerns over security, costs, and data sovereignty are driving businesses to repatriate workloads to private clouds. This shift will lead to more complex multi-cloud environments, requiring tools that can unify and optimize diverse infrastructures.
+
+**4. A dynamic market for hypervisors and cloud platforms** The acquisition of VMware by Broadcom is creating instability in the hypervisor market, leading to customer attrition and opportunities for emerging players. In 2025, businesses will seek reliable alternatives, further energizing the sector’s dynamism. This volatility will also heighten the demand for solutions that can swiftly adapt to evolving market conditions.
+
+**5. Sustainability as a strategic priority** Regulatory and societal pressures will push businesses to prioritize energy efficiency. Datacenters that adopt sustainable, innovative solutions will set the standard for the industry. Investors will increasingly favor projects emphasizing eco-friendly technologies.
+
+**6. The adoption of Arm and RISC-V processors in datacenters** ARM and RISC-V architectures, known for their energy efficiency and flexibility, will see accelerated adoption in 2025. Players like Ampere Computing, leveraging ARM-based solutions, will be key drivers of this transition. A strategic collaboration between ARM and Ampere Computing could further accelerate the adoption of these technologies, especially for cloud-intensive workloads. Simultaneously, RISC-V, with its open-source model, is gaining traction among datacenters looking to reduce dependence on proprietary architectures.
+
+2025 is set to be a year of great challenges and strategic opportunities for the IT world. From energy scarcity and evolving CIO priorities to the rise of ARM and RISC-V architectures and the shifting dynamics of the hypervisor market, businesses must innovate to stay competitive. At Altwy, we’re ready to support this transformation with solutions that reduce energy consumption and optimize cloud environments, helping redefine the technological paradigm.
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
 		id: 13,
 		date: "Dec 2024",
 		title: "Altwy secures funding from Bpifrance under the #France2030 program to accelerate the development of Altwy, the platform for next-generation data centers and AI infrastructure.",
