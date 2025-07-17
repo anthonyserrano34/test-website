@@ -48,10 +48,10 @@ export default function ContactPage() {
 							<Link href="/" className="flex-shrink-0">
 								<Image
 									src="/logo.png"
-									alt="Logo"
-									width={40}
-									height={40}
-									className="w-10 h-10"
+									alt="Altwy Logo"
+									width={110}
+									height={32}
+									className="w-22 h-8"
 								/>
 							</Link>
 						</div>

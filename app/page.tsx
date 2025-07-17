@@ -1,64 +1,120 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { useInView } from "react-intersection-observer"
-import { BarChart3, Calendar, Gift, MessageSquare, LineChart, Share2, Linkedin, Menu, Leaf, Play } from 'lucide-react'
-import { Inter } from 'next/font/google'
-import localFont from 'next/font/local'
-import { useEffect, useState } from 'react'
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import {
+	BarChart3,
+	Calendar,
+	Gift,
+	MessageSquare,
+	LineChart,
+	Share2,
+	Linkedin,
+	Menu,
+	Leaf,
+	Play,
+} from "lucide-react";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { useEffect, useState } from "react";
+import { Marquee } from "@/components/ui/marquee";
 
-const inter = Inter({ subsets: ['latin'] })
-const galanoGrotesque = localFont({ src: './fonts/0_GalanoGrotesqueDEMO-Bold.otf' })
+const inter = Inter({ subsets: ["latin"] });
+const galanoGrotesque = localFont({
+	src: "./fonts/0_GalanoGrotesqueDEMO-Bold.otf",
+});
 
 export default function HomePage() {
-	const [menuOpen, setMenuOpen] = useState(false)
-	const [isNavbarTransparent, setIsNavbarTransparent] = useState(true)
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [isNavbarTransparent, setIsNavbarTransparent] = useState(true);
 
 	const [heroRef, heroInView] = useInView({
 		threshold: 0,
 		initialInView: true,
-	})
-	const [videoRef] = useInView({ triggerOnce: true, threshold: 0.1 })
-	const [partnersRef, partnersInView] = useInView({ triggerOnce: true, threshold: 0.1 })
-	const [featureRef, featureInView] = useInView({ triggerOnce: true, threshold: 0.1 })
-	const [securityRef, securityInView] = useInView({ triggerOnce: true, threshold: 0.1 })
-	const [solutionsRef, solutionsInView] = useInView({ triggerOnce: true, threshold: 0.1 })
-	const [linkedinRef, linkedinInView] = useInView({ triggerOnce: true, threshold: 0.1 })
+	});
+	const [videoRef] = useInView({ triggerOnce: true, threshold: 0.1 });
+	const [featureRef, featureInView] = useInView({
+		triggerOnce: true,
+		threshold: 0.1,
+	});
+	const [securityRef, securityInView] = useInView({
+		triggerOnce: true,
+		threshold: 0.1,
+	});
+	const [solutionsRef, solutionsInView] = useInView({
+		triggerOnce: true,
+		threshold: 0.1,
+	});
+	const [linkedinRef, linkedinInView] = useInView({
+		triggerOnce: true,
+		threshold: 0.1,
+	});
 
-	const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+	const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
 	useEffect(() => {
-		setIsNavbarTransparent(heroInView)
-	}, [heroInView])
+		setIsNavbarTransparent(heroInView);
+	}, [heroInView]);
 
 	const fadeInUpVariants = {
 		hidden: { opacity: 0, y: 20 },
-		visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-	}
+		visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+	};
 
 	const loadVideo = () => {
-		setIsVideoLoaded(true)
+		setIsVideoLoaded(true);
 		if (window.gtag) {
-			window.gtag('event', 'played_video_homepage', {
-				event_category: 'engagement',
-				event_label: 'User played the video on the homepage',
+			window.gtag("event", "played_video_homepage", {
+				event_category: "engagement",
+				event_label: "User played the video on the homepage",
 			});
 		}
-	}
+	};
 
 	const logos = [
-		{ src: "/bpifrance-logo-blanc.png", alt: "BPI France Logo" },
-		{ src: "/logo-france2030-white.png", alt: "France 2030 Logo" },
+		{ src: "/bpifrance-logo.png", alt: "BPI France Logo" },
+		{ src: "/logo-france2030.png", alt: "France 2030 Logo" },
 		{ src: "/slush_logo_white.png", alt: "SLUSH Logo" },
-	]
+		{ src: "/occitanie-logo.png", alt: "Région Occitanie Logo" },
+		{ src: "/cyllene-logo.png", alt: "Cyllene Logo" },
+	];
+
+	const MarqueeLogos = () => (
+		<Marquee speed={20}>
+			{logos.map((logo, index) => (
+				<div
+					key={index}
+					className="flex-shrink-0 flex items-center justify-center"
+					style={{
+						width: "200px",
+						marginLeft: "20px",
+						marginRight: "20px",
+					}}
+				>
+					<Image
+						src={logo.src}
+						alt={logo.alt}
+						width={280}
+						height={110}
+						className="!h-10 sm:!h-12 md:!h-14 lg:!h-16 xl:!h-18 w-auto object-contain"
+					/>
+				</div>
+			))}
+		</Marquee>
+	);
 
 	return (
 		<div className={`min-h-screen bg-[#164C4C] ${inter.className}`}>
 			{/* Navbar */}
-			<nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isNavbarTransparent && !menuOpen ? '' : 'bg-[#164C4C]/95 backdrop-blur-md'}`}>
-
+			<nav
+				className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+					isNavbarTransparent && !menuOpen
+						? ""
+						: "bg-[#164C4C]/95 backdrop-blur-md"
+				}`}
+			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex items-center justify-between h-16">
 						<div className="flex items-center">
@@ -66,18 +122,38 @@ export default function HomePage() {
 								<Image
 									src="/logo.png"
 									alt="Altwy Logo"
-									width={40}
-									height={40}
-									className="w-10 h-10"
+									width={110}
+									height={32}
+									className="w-22 h-8"
 								/>
 							</Link>
 						</div>
 						<div className="hidden md:block">
 							<div className="ml-10 flex items-baseline space-x-4">
-								<Link href="/" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-								<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Company</Link>
-								<Link href="news" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">News</Link>
-								<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Contact</Link>
+								<Link
+									href="/"
+									className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium"
+								>
+									Home
+								</Link>
+								<Link
+									href="/company"
+									className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium"
+								>
+									Company
+								</Link>
+								<Link
+									href="news"
+									className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium"
+								>
+									News
+								</Link>
+								<Link
+									href="/contact"
+									className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium"
+								>
+									Contact
+								</Link>
 							</div>
 						</div>
 						<div className="md:hidden">
@@ -93,10 +169,30 @@ export default function HomePage() {
 				{menuOpen && (
 					<div className="md:hidden bg-[#164C4C]/95 backdrop-blur-md">
 						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Contact</Link>
+							<Link
+								href="/"
+								className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium"
+							>
+								Home
+							</Link>
+							<Link
+								href="/company"
+								className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium"
+							>
+								Company
+							</Link>
+							<Link
+								href="/news"
+								className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium"
+							>
+								News
+							</Link>
+							<Link
+								href="/contact"
+								className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium"
+							>
+								Contact
+							</Link>
 						</div>
 					</div>
 				)}
@@ -111,9 +207,7 @@ export default function HomePage() {
 				variants={fadeInUpVariants}
 			>
 				{/* Glowing effect */}
-				<motion.div
-					className="absolute inset-0 overflow-hidden"
-				>
+				<motion.div className="absolute inset-0 overflow-hidden">
 					<div
 						className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1800px] h-[800px]"
 						style={{
@@ -128,8 +222,8 @@ export default function HomePage() {
                 rgba(64,224,208,0.3) 30%, 
                 rgba(22,76,76,0) 70%)
                 `,
-							filter: 'blur(60px)',
-							animation: 'pulse 4s infinite',
+							filter: "blur(60px)",
+							animation: "pulse 4s infinite",
 						}}
 					/>
 				</motion.div>
@@ -141,10 +235,10 @@ export default function HomePage() {
 							key={i}
 							className="absolute rounded-full bg-teal-300 opacity-20"
 							style={{
-								width: Math.random() * 2 + 1 + 'px',
-								height: Math.random() * 2 + 1 + 'px',
-								top: Math.random() * 100 + '%',
-								left: Math.random() * 100 + '%',
+								width: Math.random() * 2 + 1 + "px",
+								height: Math.random() * 2 + 1 + "px",
+								top: Math.random() * 100 + "%",
+								left: Math.random() * 100 + "%",
 							}}
 							animate={{
 								y: [0, -30, 0],
@@ -161,18 +255,36 @@ export default function HomePage() {
 				</div>
 
 				{/* Hero Content */}
-				<div className="relative z-10 px-4 pt-32">
+				<div className="relative z-10 px-4 pt-32 pb-4 sm:pb-6 md:pb-8 lg:pb-0">
 					<div className="max-w-4xl mx-auto text-center">
 						<motion.div
 							className="inline-flex items-center gap-2 bg-[#164C4C] rounded-full px-4 py-1 mb-8"
 							variants={fadeInUpVariants}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#57e4c5]">
-								<path d="M8 1.6C4.4712 1.6 1.6 4.4712 1.6 8C1.6 11.5288 4.4712 14.4 8 14.4C11.5288 14.4 14.4 11.5288 14.4 8C14.4 4.4712 11.5288 1.6 8 1.6ZM8 0C12.4184 0 16 3.5816 16 8C16 12.4184 12.4184 16 8 16C3.5816 16 0 12.4184 0 8C0 3.5816 3.5816 0 8 0Z" fill="currentColor" />
-								<path d="M7.2 4H8.8V5.6H7.2V4Z" fill="currentColor" />
-								<path d="M7.2 7.2H8.8V12H7.2V7.2Z" fill="currentColor" />
+							<svg
+								width="16"
+								height="16"
+								viewBox="0 0 16 16"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								className="text-[#57e4c5]"
+							>
+								<path
+									d="M8 1.6C4.4712 1.6 1.6 4.4712 1.6 8C1.6 11.5288 4.4712 14.4 8 14.4C11.5288 14.4 14.4 11.5288 14.4 8C14.4 4.4712 11.5288 1.6 8 1.6ZM8 0C12.4184 0 16 3.5816 16 8C16 12.4184 12.4184 16 8 16C3.5816 16 0 12.4184 0 8C0 3.5816 3.5816 0 8 0Z"
+									fill="currentColor"
+								/>
+								<path
+									d="M7.2 4H8.8V5.6H7.2V4Z"
+									fill="currentColor"
+								/>
+								<path
+									d="M7.2 7.2H8.8V12H7.2V7.2Z"
+									fill="currentColor"
+								/>
 							</svg>
-							<span className="text-white/80 text-sm">Altwy Global Datacenter Management</span>
+							<span className="text-white/80 text-sm">
+								Altwy Global Datacenter Management
+							</span>
 						</motion.div>
 
 						<motion.h1
@@ -200,9 +312,27 @@ export default function HomePage() {
 							className="text-lg md:text-xl text-white/80 mb-12 max-w-3xl mx-auto"
 							variants={fadeInUpVariants}
 						>
-							<p><span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span> develops innovative cloud management software on <b>ARM</b>, <b>RISC-V</b> and <b>INTEL</b>, to optimize data center operations and reduce energy consumption.</p>
-							<p>By providing tools that improve resource allocation and monitor usage, we help data centers run more sustainably.</p>
-							<p>Our solutions are tailored for companies looking to cut datacenter costs and minimizing environmental impact.</p>
+							<p>
+								<span
+									className={`${galanoGrotesque.className} tracking-tighter`}
+								>
+									Altwy
+								</span>{" "}
+								develops innovative cloud management software on{" "}
+								<b>ARM</b>, <b>RISC-V</b> and <b>INTEL</b>, to
+								optimize data center operations and reduce
+								energy consumption.
+							</p>
+							<p>
+								By providing tools that improve resource
+								allocation and monitor usage, we help data
+								centers run more sustainably.
+							</p>
+							<p>
+								Our solutions are tailored for companies looking
+								to cut datacenter costs and minimizing
+								environmental impact.
+							</p>
 						</motion.p>
 
 						{/* Video Section */}
@@ -248,6 +378,16 @@ export default function HomePage() {
 				</div>
 			</motion.div>
 
+			{/* Partners Logos Marquee */}
+			<motion.div
+				className="max-w-4xl mx-auto mb-0 sm:mb-2 md:mb-6 lg:mb-12 py-1 sm:py-2 md:py-3 lg:py-6"
+				variants={fadeInUpVariants}
+			>
+				<div className="w-full overflow-hidden">
+					<MarqueeLogos />
+				</div>
+			</motion.div>
+
 			{/* Green Efficiency Section */}
 			<motion.section
 				className="relative min-h-[600px] overflow-hidden bg-[#164C4C]"
@@ -276,13 +416,14 @@ export default function HomePage() {
               linear-gradient(to right, rgba(64,224,208,0.1) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(64,224,208,0.1) 1px, transparent 1px)
             `,
-						backgroundSize: '100% 100%, 100% 100%, 40px 40px, 40px 40px',
-						mask: 'radial-gradient(circle at center, black 0%, transparent 75%)',
+						backgroundSize:
+							"100% 100%, 100% 100%, 40px 40px, 40px 40px",
+						mask: "radial-gradient(circle at center, black 0%, transparent 75%)",
 					}}
 				/>
 
 				{/* Content */}
-				<div className="relative max-w-6xl mx-auto px-4 py-20">
+				<div className="relative max-w-6xl mx-auto px-4 py-8 sm:py-12 md:py-16 lg:py-20">
 					<div className="grid md:grid-cols-2 gap-12 items-center">
 						{/* Left column */}
 						<div className="space-y-8">
@@ -290,7 +431,12 @@ export default function HomePage() {
 								className="text-[#57e4c5] text-lg font-medium"
 								variants={fadeInUpVariants}
 							>
-								Green Efficiency with <span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span>
+								Green Efficiency with{" "}
+								<span
+									className={`${galanoGrotesque.className} tracking-tighter`}
+								>
+									Altwy
+								</span>
 							</motion.p>
 
 							<motion.h2
@@ -303,8 +449,27 @@ export default function HomePage() {
 								className="text-white/70 text-lg"
 								variants={fadeInUpVariants}
 							>
-								<p><span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span> transforms data centers with cutting-edge cloud management software that slashes energy consumption.</p>
-								<p>By driving efficient resource use, <span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span> empowers companies to reduce their carbon footprint and embrace a sustainable digital future.</p>
+								<p>
+									<span
+										className={`${galanoGrotesque.className} tracking-tighter`}
+									>
+										Altwy
+									</span>{" "}
+									transforms data centers with cutting-edge
+									cloud management software that slashes
+									energy consumption.
+								</p>
+								<p>
+									By driving efficient resource use,{" "}
+									<span
+										className={`${galanoGrotesque.className} tracking-tighter`}
+									>
+										Altwy
+									</span>{" "}
+									empowers companies to reduce their carbon
+									footprint and embrace a sustainable digital
+									future.
+								</p>
 							</motion.p>
 
 							<motion.div
@@ -315,10 +480,12 @@ export default function HomePage() {
 									ESG dashboard integrated.
 								</button>
 								<button className="w-full px-6 py-3 bg-[#1a3b3b] hover:bg-[#1f4545] text-white rounded-lg transition-colors text-left border border-[#57e4c5]/40">
-									Supporting migration from power hungry processors to modern ones.
+									Supporting migration from power hungry
+									processors to modern ones.
 								</button>
 								<button className="w-full px-6 py-3 bg-[#1a3b3b] hover:bg-[#1f4545] text-white rounded-lg transition-colors text-left border border-[#57e4c5]/50">
-									Integrated AI decision maker to improve datacenter efficiency.
+									Integrated AI decision maker to improve
+									datacenter efficiency.
 								</button>
 							</motion.div>
 						</div>
@@ -329,8 +496,9 @@ export default function HomePage() {
 							<div
 								className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px]"
 								style={{
-									background: 'radial-gradient(circle, rgba(64,224,208,0.2) 0%, rgba(64,224,208,0.1) 40%, transparent 70%)',
-									filter: 'blur(40px)',
+									background:
+										"radial-gradient(circle, rgba(64,224,208,0.2) 0%, rgba(64,224,208,0.1) 40%, transparent 70%)",
+									filter: "blur(40px)",
 								}}
 							/>
 
@@ -343,7 +511,7 @@ export default function HomePage() {
 								transition={{
 									duration: 2,
 									repeat: Infinity,
-									ease: "easeInOut"
+									ease: "easeInOut",
 								}}
 							>
 								<div className="bg-[#1a3b3b] p-6 rounded-2xl shadow-lg border border-[#57e4c5]/20">
@@ -389,7 +557,13 @@ export default function HomePage() {
 						className="text-3xl md:text-4xl font-bold text-white text-center mb-4"
 						variants={fadeInUpVariants}
 					>
-						Here is how <span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span> addresses daily Datacenter challenges
+						Here is how{" "}
+						<span
+							className={`${galanoGrotesque.className} tracking-tighter`}
+						>
+							Altwy
+						</span>{" "}
+						addresses daily Datacenter challenges
 					</motion.h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
@@ -402,11 +576,19 @@ export default function HomePage() {
 								<div className="p-2 bg-[#57e4c5]/20 rounded-lg">
 									<BarChart3 className="w-6 h-6 text-[#57e4c5]" />
 								</div>
-								<h3 className="text-xl font-semibold text-white">Performance Analytics</h3>
+								<h3 className="text-xl font-semibold text-white">
+									Performance Analytics
+								</h3>
 							</div>
-							<p className="text-white/70 mb-4">Get insights, performance metrics, and resource utilization powered by AI.</p>
+							<p className="text-white/70 mb-4">
+								Get insights, performance metrics, and resource
+								utilization powered by AI.
+							</p>
 							<div className="bg-[#164C4C]/50 rounded-lg p-4 backdrop-blur-sm h-32 relative">
-								<svg className="w-full h-full" viewBox="0 0 100 50">
+								<svg
+									className="w-full h-full"
+									viewBox="0 0 100 50"
+								>
 									<motion.path
 										d="M 0,25 Q 25,25 25,15 T 50,5 T 75,20 T 100,15"
 										fill="none"
@@ -414,7 +596,10 @@ export default function HomePage() {
 										strokeWidth="2"
 										initial={{ pathLength: 0 }}
 										animate={{ pathLength: 1 }}
-										transition={{ duration: 2, repeat: Infinity }}
+										transition={{
+											duration: 2,
+											repeat: Infinity,
+										}}
 									/>
 								</svg>
 							</div>
@@ -429,9 +614,14 @@ export default function HomePage() {
 								<div className="p-2 bg-[#57e4c5]/20 rounded-lg">
 									<Calendar className="w-6 h-6 text-[#57e4c5]" />
 								</div>
-								<h3 className="text-xl font-semibold text-white">Resource Scheduling</h3>
+								<h3 className="text-xl font-semibold text-white">
+									Resource Scheduling
+								</h3>
 							</div>
-							<p className="text-white/70 mb-4">Optimize resource allocation with smart scheduling and automated management.</p>
+							<p className="text-white/70 mb-4">
+								Optimize resource allocation with smart
+								scheduling and automated management.
+							</p>
 							<div className="bg-[#164C4C]/50 rounded-lg p-4 backdrop-blur-sm">
 								<div className="grid grid-cols-3 gap-2">
 									{[...Array(6)].map((_, i) => (
@@ -461,9 +651,14 @@ export default function HomePage() {
 								<div className="p-2 bg-[#57e4c5]/20 rounded-lg">
 									<Gift className="w-6 h-6 text-[#57e4c5]" />
 								</div>
-								<h3 className="text-xl font-semibold text-white">Smart Automation</h3>
+								<h3 className="text-xl font-semibold text-white">
+									Smart Automation
+								</h3>
 							</div>
-							<p className="text-white/70 mb-4">Automate resource distribution and workload management based on usage patterns.</p>
+							<p className="text-white/70 mb-4">
+								Automate resource distribution and workload
+								management based on usage patterns.
+							</p>
 							<div className="bg-[#164C4C]/50 rounded-lg p-4 backdrop-blur-sm">
 								<div className="flex justify-center gap-4">
 									{[...Array(3)].map((_, i) => (
@@ -494,9 +689,14 @@ export default function HomePage() {
 								<div className="p-2 bg-[#57e4c5]/20 rounded-lg">
 									<MessageSquare className="w-6 h-6 text-[#57e4c5]" />
 								</div>
-								<h3 className="text-xl font-semibold text-white">AI-Powered Responses</h3>
+								<h3 className="text-xl font-semibold text-white">
+									AI-Powered Responses
+								</h3>
 							</div>
-							<p className="text-white/70 mb-4">Intelligent system responses and automated issue resolution.</p>
+							<p className="text-white/70 mb-4">
+								Intelligent system responses and automated issue
+								resolution.
+							</p>
 							<div className="bg-[#164C4C]/50 rounded-lg p-4 backdrop-blur-sm">
 								{[...Array(3)].map((_, i) => (
 									<motion.div
@@ -525,9 +725,14 @@ export default function HomePage() {
 								<div className="p-2 bg-[#57e4c5]/20 rounded-lg">
 									<LineChart className="w-6 h-6 text-[#57e4c5]" />
 								</div>
-								<h3 className="text-xl font-semibold text-white">Analytics Dashboard</h3>
+								<h3 className="text-xl font-semibold text-white">
+									Analytics Dashboard
+								</h3>
 							</div>
-							<p className="text-white/70 mb-4">Comprehensive analytics and performance monitoring tools.</p>
+							<p className="text-white/70 mb-4">
+								Comprehensive analytics and performance
+								monitoring tools.
+							</p>
 							<div className="bg-[#164C4C]/50 rounded-lg p-4 backdrop-blur-sm">
 								<div className="grid grid-cols-2 gap-2">
 									{[...Array(4)].map((_, i) => (
@@ -557,9 +762,14 @@ export default function HomePage() {
 								<div className="p-2 bg-[#57e4c5]/20 rounded-lg">
 									<Share2 className="w-6 h-6 text-[#57e4c5]" />
 								</div>
-								<h3 className="text-xl font-semibold text-white">Resource Optimization</h3>
+								<h3 className="text-xl font-semibold text-white">
+									Resource Optimization
+								</h3>
 							</div>
-							<p className="text-white/70 mb-4">Optimize resource allocation and improve system performance.</p>
+							<p className="text-white/70 mb-4">
+								Optimize resource allocation and improve system
+								performance.
+							</p>
 							<div className="bg-[#164C4C]/50 rounded-lg p-4 backdrop-blur-sm">
 								<div className="flex justify-between items-center">
 									<div className="flex gap-2">
@@ -608,58 +818,47 @@ export default function HomePage() {
 								className="w-full h-auto"
 							/>
 						</motion.div>
-						<motion.div className="space-y-4" variants={fadeInUpVariants}>
-							<motion.div className="text-[#57e4c5]" variants={fadeInUpVariants}>Efficient Virtualization</motion.div>
-							<motion.h2 className="text-3xl font-bold text-white" variants={fadeInUpVariants}>
+						<motion.div
+							className="space-y-4"
+							variants={fadeInUpVariants}
+						>
+							<motion.div
+								className="text-[#57e4c5]"
+								variants={fadeInUpVariants}
+							>
+								Efficient Virtualization
+							</motion.div>
+							<motion.h2
+								className="text-3xl font-bold text-white"
+								variants={fadeInUpVariants}
+							>
 								Optimized for ARM and RISC-V Architecture
 							</motion.h2>
-							<motion.h3 className="text-xl text-white/80" variants={fadeInUpVariants}>
+							<motion.h3
+								className="text-xl text-white/80"
+								variants={fadeInUpVariants}
+							>
 								Leveraging Advanced Processor Features
 							</motion.h3>
-							<motion.p className="text-white/60" variants={fadeInUpVariants}>
-								<span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span> utilizes ARM and RISC-V specific features to provide near-native performance for guest operating systems while significantly reducing heat generation and energy consumption.
+							<motion.p
+								className="text-white/60"
+								variants={fadeInUpVariants}
+							>
+								<span
+									className={`${galanoGrotesque.className} tracking-tighter`}
+								>
+									Altwy
+								</span>{" "}
+								utilizes ARM and RISC-V specific features to
+								provide near-native performance for guest
+								operating systems while significantly reducing
+								heat generation and energy consumption.
 							</motion.p>
-							<motion.div variants={fadeInUpVariants}>
-							</motion.div>
+							<motion.div
+								variants={fadeInUpVariants}
+							></motion.div>
 						</motion.div>
 					</div>
-				</div>
-			</motion.section>
-
-			{/* Partners section (logo carousel) */}
-			<motion.section
-				className="relative z-10 px-4 py-16 text-center bg-[#164C4C]"
-				ref={partnersRef}
-				initial="hidden"
-				animate={partnersInView ? "visible" : "hidden"}
-				variants={fadeInUpVariants}
-			>
-				<div className="max-w-6xl mx-auto overflow-hidden">
-					<motion.div
-						className="flex"
-						variants={fadeInUpVariants}
-					>
-						<motion.div
-							className="flex space-x-8 animate-carousel"
-							style={{
-								animationDuration: '20s',
-								animationTimingFunction: 'linear',
-								animationIterationCount: 'infinite',
-							}}
-						>
-							{[...logos, ...logos, ...logos, ...logos, ...logos, ...logos].map((logo, index) => (
-								<div key={index} className="flex-shrink-0">
-									<Image
-										src={logo.src}
-										alt={logo.alt}
-										width={200}
-										height={67}
-										className="h-12 w-auto object-contain"
-									/>
-								</div>
-							))}
-						</motion.div>
-					</motion.div>
 				</div>
 			</motion.section>
 
@@ -674,12 +873,15 @@ export default function HomePage() {
 				{/* Animated background */}
 				<div className="absolute inset-0">
 					{/* Gradient overlay */}
-					<div className="absolute inset-0" style={{
-						background: `
+					<div
+						className="absolute inset-0"
+						style={{
+							background: `
         radial-gradient(circle at 20% 20%, #164C4C 0%, transparent 50%),
         radial-gradient(circle at 100% 150%, #57e4c5 0%, transparent 40%)
-      `
-					}} />
+      `,
+						}}
+					/>
 
 					{/* Animated lines */}
 					{[...Array(5)].map((_, i) => (
@@ -688,7 +890,7 @@ export default function HomePage() {
 							className="absolute h-px bg-gradient-to-r from-transparent via-[#57e4c5]/25 to-transparent w-full"
 							style={{ top: `${20 * (i + 1)}%` }}
 							animate={{
-								x: ['-100%', '100%'],
+								x: ["-100%", "100%"],
 							}}
 							transition={{
 								duration: 8,
@@ -705,10 +907,10 @@ export default function HomePage() {
 							key={i}
 							className="absolute rounded-full bg-[#57e4c5]"
 							style={{
-								width: Math.random() * 2 + 2 + 'px',
-								height: Math.random() * 2 + 2 + 'px',
-								top: Math.random() * 100 + '%',
-								left: Math.random() * 100 + '%',
+								width: Math.random() * 2 + 2 + "px",
+								height: Math.random() * 2 + 2 + "px",
+								top: Math.random() * 100 + "%",
+								left: Math.random() * 100 + "%",
 							}}
 							animate={{
 								y: [0, -30, 0],
@@ -734,7 +936,7 @@ export default function HomePage() {
 							transition={{
 								duration: 4,
 								repeat: Infinity,
-								ease: "easeInOut"
+								ease: "easeInOut",
 							}}
 						>
 							{/* Glow effect */}
@@ -746,14 +948,26 @@ export default function HomePage() {
 							className="text-4xl md:text-5xl font-bold text-white text-center"
 							variants={fadeInUpVariants}
 						>
-							Stay Connected with <span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span>
+							Stay Connected with{" "}
+							<span
+								className={`${galanoGrotesque.className} tracking-tighter`}
+							>
+								Altwy
+							</span>
 						</motion.h2>
 
 						<motion.p
 							className="text-xl text-white/70 max-w-2xl text-center"
 							variants={fadeInUpVariants}
 						>
-							Follow us on LinkedIn to stay updated with the latest <span className={`${galanoGrotesque.className} tracking-tighter`}>Altwy</span> news, features, and innovations.
+							Follow us on LinkedIn to stay updated with the
+							latest{" "}
+							<span
+								className={`${galanoGrotesque.className} tracking-tighter`}
+							>
+								Altwy
+							</span>{" "}
+							news, features, and innovations.
 						</motion.p>
 
 						<motion.div variants={fadeInUpVariants}>
@@ -764,16 +978,23 @@ export default function HomePage() {
 								className="inline-flex items-center gap-2 px-8 py-3 bg-[#57e4c5] hover:bg-[#62ecce] text-white rounded-full transition-colors text-lg font-medium relative group"
 								onClick={() => {
 									if (window.gtag) {
-										window.gtag('event', 'opened_linkedin_altwy', {
-											event_category: 'engagement',
-											event_label: 'User clicked the LinkedIn button',
-										});
+										window.gtag(
+											"event",
+											"opened_linkedin_altwy",
+											{
+												event_category: "engagement",
+												event_label:
+													"User clicked the LinkedIn button",
+											}
+										);
 									}
 								}}
 							>
 								<span className="absolute inset-0 rounded-full bg-[#57e4c5]/20 blur-lg group-hover:bg-[#57e4c5]/30 transition-colors" />
 								<Linkedin className="w-5 h-5 relative z-10" />
-								<span className="relative z-10">Follow on LinkedIn</span>
+								<span className="relative z-10">
+									Follow on LinkedIn
+								</span>
 							</Link>
 						</motion.div>
 					</div>
@@ -800,15 +1021,8 @@ export default function HomePage() {
           100% { transform: opacity: 1; }
         }
 
-        @keyframes carousel {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
 
-        .animate-carousel {
-          animation: carousel 60s linear infinite;
-        }
       `}</style>
 		</div>
-	)
+	);
 }

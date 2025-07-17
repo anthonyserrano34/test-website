@@ -5,12 +5,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --sky-400: #38bdf8;
+  --sky-500: #0ea5e9;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --sky-400: #38bdf8;
+    --sky-500: #0ea5e9;
   }
 }
 

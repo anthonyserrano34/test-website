@@ -15,6 +15,135 @@ const inter = Inter({ subsets: ['latin'] })
 // TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
 const newsItems = [
 	{
+		id: 21,
+		date: "Jun 2025",
+		title: "Et si on reprenait vraiment le contrôle de notre infrastructure numérique ?",
+		contentType: "text",
+		content: `Vous pensez que vos données sont en sécurité parce qu'elles sont stockées en Europe ?
+Mauvaise nouvelle : le droit américain s'applique quand même.
+
+FISA et le CLOUD Act permettent à la NSA ou au DOJ d'accéder à vos données, même :
+ • si elles sont hébergées à Paris ou Francfort,
+ • et même si vous êtes 100 % RGPD compliant.
+
+C'est le cas d'AWS, Azure, Google Cloud… mais aussi de tout cloud privé fonctionnant sur des technos ou matériels américains (VMware, Microsoft, Dell…).
+
+Chez Altwy, on fait un autre choix :
+✅ Infrastructure 100 % européenne,
+✅ Virtualisation sobre et souveraine sur ARM,
+✅ Contrôle total par les acteurs européens, sans backdoor légale.
+
+Il est temps d'arrêter de confondre "local" et "souverain".
+
+Et si on reprenait vraiment le contrôle de notre infrastructure numérique ?
+
+Voir plus: https://www.linkedin.com/pulse/peut-on-encore-parler-de-souverainet%C3%A9-num%C3%A9rique-quand-lambert-lktbf/?trackingId=xibr%2FkO0St6PL9NOorcd3Q%3D%3D
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
+		id: 20,
+		date: "May 2025",
+		title: "🔒 Europe, we've been warned.",
+		contentType: "text",
+		content: `**The future of Europe's digital autonomy won't wait. Let's build it now.**
+
+Microsoft just cut off the **International Criminal Court's emails** – unilaterally.
+
+Sources: https://www.computerweekly.com/opinion/Microsofts-ICC-email-block-reignites-European-data-sovereignty-concerns
+
+This isn't about convenience anymore. It's about **sovereignty**.
+When a US-based hyperscaler can suspend communications from **The Hague**, it's a wake-up call for every European institution, company, and policymaker.
+
+The cloud we rely on today is **not neutral**. And it was never designed to be.
+
+⚠️ The risks go far beyond privacy. What's at stake is our **capacity to operate freely** in a digitized, geopolitically tense world.
+
+At Altwy, we are building a **next-generation infrastructure platform** —
+• **sovereign by design**,
+• **energy-efficient by architecture**,
+• **and resilient by default**.
+
+Our stack allows Enterprises, **Telcos and Service Providers** to operate a fully governed, AI-ready infrastructure, with built-in compatibility for **Intel, ARM, and RISC-V**.
+We're also releasing devkits for **OpenAI and Mistral AI**, with **GDPR-native search capabilities**.
+
+We're now raising money to scale.
+
+Early investors include a major German fund and a French impact VC.
+We are actively looking for a **lead investor** aligned with our mission.
+
+If you're a VC with a strong **impact or sovereignty thesis**, let's talk.
+Or if you're in my network and believe in what we're building — a **WARM introduction** would mean the world.
+
+**The future of Europe's digital autonomy won't wait. Let's build it now.**
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
+		id: 19,
+		date: "May 2025",
+		title: "🚨 Because the cost of waiting… is power wasted.",
+		contentType: "text",
+		content: `Amazon may soon rely on **nuclear power plants** to meet the energy needs of its cloud datacenters.
+Sources: https://www.theregister.com/2025/05/16/amazon_nuclear_power_britain/
+
+That's not just a headline.
+
+It's a clear signal:
+➡️ Electricity is becoming the #1 constraint for Datacenter.
+➡️ Energy efficiency is now a strategic battleground.
+
+At Altwy, we believe the solution doesn't start with nuclear.
+We believe in a different approach — one that starts with efficiency.
+
+We're building a sovereign, low-consumption alternative for Datacenter, designed to:
+➡️ Slash power consumption at the virtualization layer
+➡️ Make datacenters ARM- and RISC-V–ready
+➡️ Free space in the Datacenter
+➡️ Empower Telcos, Service Providers and Enterprise to scale without adding energy strain
+
+Our future platform will includes:
+✅ One-click deployment of OpenAI & Mistral AI toolkits
+✅ A GDPR search module powered by sovereign AI
+✅ Open-source APIs to accelerate third-party integrations
+
+Energy will be the limiting factor of the digital world. The infrastructure layer must evolve — before every cloud turns nuclear.
+It's time to cut energy waste, not build more reactors.
+It's time to invest in intelligent orchestration.
+We're now raising capital to scale.
+If you're an impact VC or know someone investing in deeptech and infrastructure efficiency, 📩 I'd love to connect.
+
+Because the cost of waiting… is power wasted.
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
+		id: 18,
+		date: "Apr 2025",
+		title: "U.S. Tariffs Are Reshaping the Cloud Market – A Unique Opportunity for Investors!",
+		contentType: "text",
+		content: `U.S. Tariffs Are Reshaping the Cloud Market – A Unique Opportunity for Investors!
+
+The recent tariffs imposed by President Trump on European tech products are shaking up the cloud and datacenter industry. Enterprises are now forced to rethink their infrastructure strategy—and the shift away from traditional U.S.-centric solutions has already begun.
+
+At Altwy, we provide the only sovereign European cloud management platform that enables enterprises to migrate from Intel-based VMware environments to ARM-powered infrastructures—dramatically reducing both costs and energy consumption.
+
+**Why does this matter for investors?**
+✅ Massive market demand: Enterprises and cloud providers need cost-effective, tariff-resistant alternatives.
+✅ Strategic positioning: Europe needs sovereignty in cloud infrastructure—Altwy is leading the way.
+✅ Proven impact: Altwy delivers unmatched efficiency gains.
+
+With the U.S. cloud landscape shifting, investing in Altwy means betting on the future of a resilient, sovereign, and high-performance cloud ecosystem.
+
+VCs, let's talk! The window of opportunity is now. 🚀
+
+**Christophe Lambert** 
+**CEO - Altwy**`,
+	},
+	{
 		id: 17,
 		date: "Feb 2025",
 		title: "Introducing the Distributed OS for Data Centers – Redefining Cloud Efficiency The Future of Cloud Computing is Here",
@@ -390,8 +519,27 @@ const formatText = (text: string) => {
 			return <em key={index}>{formatText(part.slice(1, -1))}</em>;
 		} else if (part.startsWith('__') && part.endsWith('__')) {
 			return <span key={index} className="text-lg">{formatText(part.slice(2, -2))}</span>;
+		} else {
+			// Detect and transform URLs into clickable links
+			const urlRegex = /(https?:\/\/[^\s]+)/g;
+			const urlParts = part.split(urlRegex);
+			return urlParts.map((urlPart, urlIndex) => {
+				if (urlRegex.test(urlPart)) {
+					return (
+						<a 
+							key={`${index}-${urlIndex}`}
+							href={urlPart}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-[#57e4c5] hover:text-[#57e4c5]/80 underline transition-colors duration-200"
+						>
+							{urlPart}
+						</a>
+					);
+				}
+				return urlPart;
+			});
 		}
-		return part;
 	});
 };
 
@@ -443,10 +591,10 @@ export default function NewsPage() {
 							<Link href="/" className="flex-shrink-0">
 								<Image
 									src="/logo.png"
-									alt="Logo"
-									width={40}
-									height={40}
-									className="w-10 h-10"
+									alt="Altwy Logo"
+									width={110}
+									height={32}
+									className="w-22 h-8"
 								/>
 							</Link>
 						</div>
