@@ -8,15 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        galano: ['var(--font-galano)', 'sans-serif'],
+      },
       colors: {
-		primary: "#48c78e",
-        secondary: "#164C4C",
+        primary: "#00FF88",
+        secondary: "#0f1713",
         background: "var(--background)",
         foreground: "var(--foreground)",
+        accent: "var(--accent)",
+        surface: "var(--surface)",
+        "surface-muted": "var(--surface-muted)",
       },
       animation: {
         marquee: 'marquee var(--duration, 30s) linear infinite',
-        'marquee-reverse': 'marquee-reverse var(--duration, 30s) linear infinite'
+        'marquee-reverse': 'marquee-reverse var(--duration, 30s) linear infinite',
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
       },
       keyframes: {
         marquee: {
@@ -26,7 +33,12 @@ const config: Config = {
         'marquee-reverse': {
           from: { transform: 'translateX(-33.333333%)' },
           to: { transform: 'translateX(0%)' }
-        }
+        },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
       }
     },
   },

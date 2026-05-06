@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import "@/app/globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieBannerWrapper from "@/components/CookieBannerWrapper";
 import { Suspense } from "react";
 
-const geistSans = localFont({
-	src: "./fonts/GeistVF.woff",
-	variable: "--font-geist-sans",
-	weight: "100 900",
+const inter = Inter({
+	subsets: ["latin"],
+	variable: "--font-inter",
+	display: "swap",
 });
-const geistMono = localFont({
-	src: "./fonts/GeistMonoVF.woff",
-	variable: "--font-geist-mono",
-	weight: "100 900",
+
+const spaceGrotesk = Space_Grotesk({
+	subsets: ["latin"],
+	variable: "--font-space-grotesk",
+	display: "swap",
+});
+
+const galanoGrotesque = localFont({
+	src: "./fonts/0_GalanoGrotesqueDEMO-Bold.otf",
+	variable: "--font-galano",
+	display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +40,7 @@ export default function RootLayout({
 				<GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''} />
 			</Suspense>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${inter.variable} ${spaceGrotesk.variable} ${galanoGrotesque.variable} antialiased`}
 			>
 				{children}
 				<CookieBannerWrapper />

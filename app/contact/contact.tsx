@@ -1,19 +1,24 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, Mail, Copy, Check } from 'lucide-react'
-import { Inter } from 'next/font/google'
-import { useState, useEffect } from 'react'
+import { Mail, Copy, Check, ArrowUpRight } from "lucide-react"
+import { useState, useEffect, FormEvent } from "react"
+import Navbar from "@/components/Navbar"
+import { SubpageHeroHeader } from "@/components/ui/subpage-hero-header"
 
-const inter = Inter({ subsets: ['latin'] })
+const labelClass =
+	"mb-2 block text-xs font-medium uppercase tracking-wide text-white/75"
+
+const inputClass =
+	"w-full rounded-xl border border-white/[0.08] bg-[#161616] px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:border-white/20 focus:bg-[#1a1a1a] focus:ring-2 focus:ring-[#00FF88]/20"
+
+const textareaClass = `${inputClass} min-h-[140px] resize-y py-3`
 
 export default function ContactPage() {
 	const [scrollY, setScrollY] = useState(0)
-	const [menuOpen, setMenuOpen] = useState(false)
 	const [copied, setCopied] = useState(false)
+	const [submitStatus, setSubmitStatus] = useState<"idle" | "success">("idle")
 
 	useEffect(() => {
 		const handleScroll = () => setScrollY(window.scrollY)
@@ -22,138 +27,271 @@ export default function ContactPage() {
 	}, [])
 
 	const handleCopy = () => {
-		navigator.clipboard.writeText('contact@altwy.com')
+		navigator.clipboard.writeText("contact@altwy.com")
 		setCopied(true)
 		setTimeout(() => setCopied(false), 2000)
 		if (window.gtag) {
-			window.gtag('event', 'email_copy_contact_page', {
-				event_category: 'engagement',
-				event_label: 'Email copied on Contact page',
-			});
+			window.gtag("event", "email_copy_contact_page", {
+				event_category: "engagement",
+				event_label: "Email copied on Contact page",
+			})
 		}
+	}
+
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		if (window.gtag) {
+			window.gtag("event", "contact_form_submit", {
+				event_category: "engagement",
+				event_label: "Contact form submitted",
+			})
+		}
+		setSubmitStatus("success")
 	}
 
 	const fadeInUpVariants = {
 		hidden: { opacity: 0, y: 20 },
-		visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+		visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 	}
 
 	return (
-		<div className={`min-h-screen bg-gradient-to-br from-[#164C4C] to-[#1a3b3b] ${inter.className}`}>
-			{/* Navbar */}
-			<nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollY > 50 ? 'bg-[#164C4C]/90 backdrop-blur-md' : ''}`}>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex items-center justify-between h-16">
-						<div className="flex items-center">
-							<Link href="/" className="flex-shrink-0">
-								<Image
-									src="/logo.png"
-									alt="Altwy Logo"
-									width={110}
-									height={32}
-									className="w-22 h-8"
-								/>
-							</Link>
-						</div>
-						<div className="hidden md:flex items-center space-x-4">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Contact</Link>
-						</div>
-						<div className="md:hidden">
-							<button
-								onClick={() => setMenuOpen(!menuOpen)}
-								className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-[#57e4c5]/10"
-							>
-								<Menu className="h-6 w-6" />
-							</button>
-						</div>
-					</div>
-				</div>
-				{menuOpen && (
-					<div className="md:hidden bg-[#164C4C]/95 backdrop-blur-md">
-						<div className="px-2 pt-2 pb-3 space-y-1">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Contact</Link>
-						</div>
-					</div>
-				)}
-			</nav>
+		<div className="relative min-h-screen bg-[var(--background)]">
+			<SubpageHeroHeader />
+			<Navbar isTransparent={scrollY <= 50} />
 
-			{/* Main Content */}
-			<main className="pt-24 px-4 max-w-4xl mx-auto relative pb-24 min-h-[150vh]">
+			<main className="relative z-10 mx-auto max-w-3xl px-4 pb-24 pt-24">
 				<motion.div
 					initial="hidden"
 					animate="visible"
 					variants={fadeInUpVariants}
-					className="text-center mb-12 relative"
+					className="relative mb-10 text-center"
 				>
 					<motion.div
-						className="inline-flex items-center gap-2 bg-[#57e4c5]/20 rounded-full px-4 py-1 mb-4"
+						className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#00FF88]/20 px-4 py-1"
 						variants={fadeInUpVariants}
 					>
-						<span className="text-[#57e4c5] text-sm font-medium">Get in Touch</span>
+						<span className="text-sm font-medium text-[#00FF88]">Contact</span>
 					</motion.div>
 					<motion.h1
-						className={`text-4xl md:text-5xl font-bold text-white mb-4 relative z-10`}
+						className="relative z-10 mb-4 text-4xl font-bold tracking-tight text-white md:text-5xl"
 						variants={fadeInUpVariants}
 					>
-						Contact Us
+						Let&apos;s have a chat
 					</motion.h1>
 					<motion.p
-						className="text-white/70 text-lg max-w-2xl mx-auto relative z-10"
+						className="relative z-10 mx-auto max-w-lg text-base leading-relaxed text-white/65 md:text-lg"
 						variants={fadeInUpVariants}
 					>
-						Reach out to us for any inquiries.
+						Questions about our products, partnerships, or anything else? We&apos;re here to help.
 					</motion.p>
-					{/* Light Halo Effect */}
-					<div className="absolute inset-0 bg-[#57e4c5] opacity-20 filter blur-3xl rounded-full"></div>
+
+					<motion.div
+						className="relative z-10 mx-auto mt-8 w-full max-w-md"
+						variants={fadeInUpVariants}
+					>
+						<div className="flex overflow-hidden rounded-xl border border-white/[0.1] bg-[#161616]">
+							<div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3">
+								<Mail className="h-4 w-4 shrink-0 text-[#00FF88]" strokeWidth={1.75} />
+								<span className="select-all truncate font-mono text-sm text-white/90">
+									contact@altwy.com
+								</span>
+							</div>
+							<motion.button
+								type="button"
+								onClick={handleCopy}
+								whileHover={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+								whileTap={{ scale: 0.98 }}
+								className="flex shrink-0 items-center gap-2 border-l border-white/10 px-4 py-3 text-sm font-medium text-white/75 transition-colors hover:text-white"
+								aria-label="Copy email address"
+							>
+								{copied ? (
+									<>
+										<Check className="h-4 w-4 text-[#00FF88]" />
+										<span className="hidden sm:inline">Copied</span>
+									</>
+								) : (
+									<>
+										<Copy className="h-4 w-4" />
+										<span className="hidden sm:inline">Copy</span>
+									</>
+								)}
+							</motion.button>
+						</div>
+						<AnimatePresence>
+							{copied && (
+								<motion.p
+									initial={{ opacity: 0, y: 4 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: 4 }}
+									className="mt-2 text-center text-xs text-white/55"
+								>
+									Address copied to clipboard
+								</motion.p>
+							)}
+						</AnimatePresence>
+					</motion.div>
 				</motion.div>
 
-				<motion.div
-					variants={fadeInUpVariants}
-					className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-[#57e4c5]/20 shadow-lg hover:shadow-[#57e4c5]/10 relative overflow-visible group"
-				>
-					<div className="flex flex-col items-center justify-center space-y-6">
-						<motion.div
-							className="w-20 h-20 bg-[#57e4c5]/20 rounded-full flex items-center justify-center cursor-pointer"
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.9 }}
-							onClick={handleCopy}
-						>
-							<Mail className="w-10 h-10 text-[#57e4c5]" />
-						</motion.div>
-						<h2 className={`text-2xl font-bold text-white`}>Email</h2>
-						<p className="text-white/70 text-center">
-							For any questions or inquiries, please email us at:
-						</p>
-						<div className="relative">
-							<motion.button
-								className="bg-[#57e4c5]/10 hover:bg-[#57e4c5]/20 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center space-x-2"
-								onClick={handleCopy}
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-							>
-								<span className="text-xl">contact@altwy.com</span>
-								{copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-							</motion.button>
-							<AnimatePresence>
-								{copied && (
-									<motion.div
-										initial={{ opacity: 0, y: 10 }}
-										animate={{ opacity: 1, y: 0 }}
-										exit={{ opacity: 0, y: 10 }}
-										className="absolute left-1/2 transform -translate-x-1/2 mt-4 px-4 py-2 bg-[#57e4c5] text-[#164C4C] rounded-md text-sm font-medium whitespace-nowrap"
-									>
-										Copied to clipboard!
-									</motion.div>
-								)}
-							</AnimatePresence>
+				<motion.div variants={fadeInUpVariants} initial="hidden" animate="visible">
+					<form onSubmit={handleSubmit} className="space-y-5">
+						<div className="grid gap-5 sm:grid-cols-2">
+							<div>
+								<label htmlFor="firstName" className={labelClass}>
+									First name <span className="normal-case text-red-400">*</span>
+								</label>
+								<input
+									id="firstName"
+									name="firstName"
+									type="text"
+									required
+									autoComplete="given-name"
+									className={inputClass}
+									placeholder="Jane"
+								/>
+							</div>
+							<div>
+								<label htmlFor="lastName" className={labelClass}>
+									Last name <span className="normal-case text-red-400">*</span>
+								</label>
+								<input
+									id="lastName"
+									name="lastName"
+									type="text"
+									required
+									autoComplete="family-name"
+									className={inputClass}
+									placeholder="Doe"
+								/>
+							</div>
 						</div>
-					</div>
+
+						<div className="grid gap-5 sm:grid-cols-2">
+							<div>
+								<label htmlFor="email" className={labelClass}>
+									Email <span className="normal-case text-red-400">*</span>
+								</label>
+								<input
+									id="email"
+									name="email"
+									type="email"
+									required
+									autoComplete="email"
+									className={inputClass}
+									placeholder="you@company.com"
+								/>
+							</div>
+							<div>
+								<label htmlFor="phone" className={labelClass}>
+									Phone <span className="normal-case text-red-400">*</span>
+								</label>
+								<input
+									id="phone"
+									name="phone"
+									type="tel"
+									required
+									autoComplete="tel"
+									className={inputClass}
+									placeholder="Country code + number (e.g. +1 234 567 8900)"
+								/>
+							</div>
+						</div>
+
+						<div className="grid gap-5 sm:grid-cols-2">
+							<div>
+								<label htmlFor="company" className={labelClass}>
+									Company <span className="normal-case text-red-400">*</span>
+								</label>
+								<input
+									id="company"
+									name="company"
+									type="text"
+									required
+									autoComplete="organization"
+									className={inputClass}
+									placeholder="Your company"
+								/>
+							</div>
+							<div>
+								<label htmlFor="jobTitle" className={labelClass}>
+									Job title <span className="normal-case text-red-400">*</span>
+								</label>
+								<input
+									id="jobTitle"
+									name="jobTitle"
+									type="text"
+									required
+									autoComplete="organization-title"
+									className={inputClass}
+									placeholder="Your role"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label htmlFor="country" className={labelClass}>
+								Country <span className="normal-case text-red-400">*</span>
+							</label>
+							<input
+								id="country"
+								name="country"
+								type="text"
+								required
+								autoComplete="country-name"
+								className={inputClass}
+								placeholder="Country or region"
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="message" className={labelClass}>
+								Message <span className="normal-case text-red-400">*</span>
+							</label>
+							<textarea
+								id="message"
+								name="message"
+								required
+								rows={5}
+								className={textareaClass}
+								placeholder="How can we help you?"
+							/>
+						</div>
+
+						<div className="space-y-4 pt-2">
+							{submitStatus === "success" && (
+								<p
+									className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/80"
+									role="status"
+								>
+									Thank you for your message. We will get back to you shortly.
+								</p>
+							)}
+							<button
+								type="submit"
+								className="group relative inline-flex w-full items-center justify-center rounded-none border border-neutral-800 bg-white px-8 py-3 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88]"
+							>
+								<div className="absolute left-0 top-0 h-2 w-2 border-l border-t border-[#00FF88] opacity-0 transition-all duration-300 -translate-x-1 -translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100" />
+								<div className="absolute bottom-0 right-0 h-2 w-2 border-b border-r border-[#00FF88] opacity-0 transition-all duration-300 translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100" />
+								<span className="relative z-10 flex items-center justify-center gap-2">
+									Send message
+									<ArrowUpRight className="h-4 w-4" />
+								</span>
+							</button>
+							<p className="text-xs leading-relaxed text-white/50">
+								<span className="font-medium text-white/65">Privacy notice: </span>
+								By submitting this form, you agree that Altwy may process your personal data to
+								respond to your request and manage our commercial relationship. In accordance with
+								GDPR, you have the right to access, rectify, or delete your data at any time. For
+								more information, please consult our{" "}
+								<Link
+									href="/privacy-policy"
+									className="text-[#00FF88] underline underline-offset-2 hover:text-[#00FF88]/80"
+								>
+									Privacy Policy
+								</Link>
+								.
+							</p>
+						</div>
+					</form>
 				</motion.div>
 			</main>
 		</div>

@@ -1,15 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client"
 
-import Link from "next/link"
-import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { ChevronDown, ChevronUp, Menu } from 'lucide-react'
-import { Inter } from 'next/font/google'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
-
-const inter = Inter({ subsets: ['latin'] })
+import Navbar from "@/components/Navbar"
+import { BentoCardShell } from "@/components/ui/bento-card-shell"
+import { SubpageHeroHeader } from "@/components/ui/subpage-hero-header"
 
 // Pour le balisage: **gras** __grand__ *italique*
 // TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
@@ -531,13 +529,22 @@ const formatText = (text: string) => {
 							href={urlPart}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[#57e4c5] hover:text-[#57e4c5]/80 underline transition-colors duration-200"
+							className="text-[#00FF88] hover:text-[#00FF88]/80 underline transition-colors duration-200"
 						>
 							{urlPart}
 						</a>
 					);
 				}
-				return urlPart;
+				
+				// Highlight Altwy
+				const altwyRegex = /(Altwy)/gi;
+				const textParts = urlPart.split(altwyRegex);
+				return textParts.map((textPart, textIndex) => {
+					if (textPart.toLowerCase() === 'altwy') {
+						return <span key={`${index}-${urlIndex}-${textIndex}`} className="font-galano">{textPart}</span>;
+					}
+					return textPart;
+				});
 			});
 		}
 	});
@@ -545,7 +552,6 @@ const formatText = (text: string) => {
 
 export default function NewsPage() {
 	const [scrollY, setScrollY] = useState(0)
-	const [menuOpen, setMenuOpen] = useState(false)
 	const [expandedItems, setExpandedItems] = useState<number[]>([])
 	const [ref, inView] = useInView({ triggerOnce: true })
 
@@ -581,53 +587,14 @@ export default function NewsPage() {
 	}
 
 	return (
-		<div className={`min-h-screen bg-gradient-to-br from-[#164C4C] to-[#1a3b3b] relative pb-24 ${inter.className}`}>
+		<div className="relative min-h-screen bg-[var(--background)] pb-24">
+			<SubpageHeroHeader />
 
 			{/* Naavbar */}
-			<nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollY > 50 ? 'bg-[#164C4C]/90 backdrop-blur-md' : ''}`}>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex items-center justify-between h-16">
-						<div className="flex items-center">
-							<Link href="/" className="flex-shrink-0">
-								<Image
-									src="/logo.png"
-									alt="Altwy Logo"
-									width={110}
-									height={32}
-									className="w-22 h-8"
-								/>
-							</Link>
-						</div>
-						<div className="hidden md:flex items-center space-x-4">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Contact</Link>
-						</div>
-						<div className="md:hidden">
-							<button
-								onClick={() => setMenuOpen(!menuOpen)}
-								className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-[#57e4c5]/10"
-							>
-								<Menu className="h-6 w-6" />
-							</button>
-						</div>
-					</div>
-				</div>
-				{menuOpen && (
-					<div className="md:hidden bg-[#164C4C]/95 backdrop-blur-md">
-						<div className="px-2 pt-2 pb-3 space-y-1">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Contact</Link>
-						</div>
-					</div>
-				)}
-			</nav>
+			<Navbar isTransparent={scrollY <= 50} />
 
 			{/* Main content */}
-			<main className="pt-24 px-4 max-w-4xl mx-auto relative pb-24">
+			<main className="relative z-10 pt-24 px-4 max-w-4xl mx-auto pb-24">
 				{/* hEADER */}
 				<motion.div
 					initial="hidden"
@@ -636,10 +603,10 @@ export default function NewsPage() {
 					className="text-center mb-12 relative"
 				>
 					<motion.div
-						className="inline-flex items-center gap-2 bg-[#57e4c5]/20 rounded-full px-4 py-1 mb-4"
+						className="inline-flex items-center gap-2 bg-[#00FF88]/20 rounded-full px-4 py-1 mb-4"
 						variants={fadeInUpVariants}
 					>
-						<span className="text-[#57e4c5] text-sm font-medium">What's New</span>
+						<span className="text-[#00FF88] text-sm font-medium">What's New</span>
 					</motion.div>
 					<motion.h1
 						className="text-4xl md:text-5xl font-bold text-white mb-4 relative z-10"
@@ -653,8 +620,6 @@ export default function NewsPage() {
 					>
 						Stay informed about our latest news.
 					</motion.p>
-					{/* Halo effect*/}
-					<div className="absolute inset-0 bg-[#57e4c5] opacity-20 filter blur-3xl rounded-full"></div>
 				</motion.div>
 
 				{/* News feed */}
@@ -665,22 +630,23 @@ export default function NewsPage() {
 					variants={staggerContainer}
 					className="space-y-12 relative"
 				>
-					{newsItems.map((item) => (
-						<motion.div
-							key={item.id}
-							variants={fadeInUpVariants}
-							className="bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 transition-all duration-300 border border-[#57e4c5]/20 shadow-lg hover:shadow-[#57e4c5]/10 relative overflow-hidden group"
-						>
-							<div className="space-y-4 relative z-10">
-								<div className="flex items-center justify-between">
-									<div className="bg-[#57e4c5]/20 text-[#57e4c5] px-3 py-1 rounded-full text-sm font-medium">
+					{newsItems.map((item, itemIndex) => {
+						const glows = ["top-right", "top-left", "center", "bottom-right"] as const
+						const glow = glows[itemIndex % glows.length]
+						return (
+						<motion.div key={item.id} variants={fadeInUpVariants} className="relative">
+							<BentoCardShell glow={glow} contentClassName="p-6 md:p-8">
+							<div className="space-y-4">
+								<div className="flex items-center justify-between gap-3">
+									<div className="rounded-full border border-[#00FF88]/25 bg-[#00FF88]/10 px-3 py-1 text-xs font-medium text-[#00FF88]">
 										{item.date}
 									</div>
 									{item.contentType === "text" && (
-										<motion.div
-											className="flex items-center gap-2 text-[#57e4c5] text-sm cursor-pointer"
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
+										<motion.button
+											type="button"
+											className="flex cursor-pointer items-center gap-2 text-sm font-medium text-[#00FF88] transition-colors hover:text-[#00FF88]/80"
+											whileHover={{ scale: 1.02 }}
+											whileTap={{ scale: 0.98 }}
 											onClick={() => {
 												if (!expandedItems.includes(item.id) && window.gtag) {
 													window.gtag('event', 'see_more_button_news_page', {
@@ -694,18 +660,18 @@ export default function NewsPage() {
 											{expandedItems.includes(item.id) ? (
 												<>
 													<span>See less</span>
-													<ChevronUp className="w-4 h-4" />
+													<ChevronUp className="h-4 w-4" />
 												</>
 											) : (
 												<>
 													<span>See more</span>
-													<ChevronDown className="w-4 h-4" />
+													<ChevronDown className="h-4 w-4" />
 												</>
 											)}
-										</motion.div>
+										</motion.button>
 									)}
 								</div>
-								<h3 className="text-2xl font-semibold text-white">
+								<h3 className="text-xl font-medium tracking-tight text-white md:text-2xl">
 									{item.title}
 								</h3>
 								<AnimatePresence>
@@ -720,27 +686,27 @@ export default function NewsPage() {
 										className="overflow-hidden"
 									>
 										{item.contentType === "text" ? (
-											<div className="text-white/70 whitespace-pre-wrap">
+											<div className="whitespace-pre-wrap text-sm leading-relaxed text-slate-400">
 												{formatText(item.content)}
 											</div>
 										) : (
-											<div className="aspect-video relative mt-4">
+											<div className="relative mt-4 aspect-video">
 												<iframe
 													src={item.content}
 													title={item.title}
 													allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 													allowFullScreen
-													className="absolute inset-0 w-full h-full rounded-lg"
+													className="absolute inset-0 h-full w-full rounded-xl border border-white/[0.06]"
 												/>
 											</div>
 										)}
 									</motion.div>
 								</AnimatePresence>
 							</div>
-							{/* Glowing border effect */}
-							<div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#57e4c5]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+							</BentoCardShell>
 						</motion.div>
-					))}
+						)
+					})}
 				</motion.div>
 			</main>
 		</div>

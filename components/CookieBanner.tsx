@@ -43,25 +43,25 @@ export default function CookieBanner() {
 					className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
 				>
 					<div className="mx-auto max-w-7xl">
-						<div className="relative overflow-hidden rounded-xl bg-[#f0f0f0] p-6 shadow-lg shadow-[#57e4c5]/10 backdrop-blur-sm border border-[#57e4c5]/20">
+						<div className="relative overflow-hidden rounded-xl border border-[#00FF88]/20 bg-[#0a0a0a] p-6 shadow-lg shadow-[#00FF88]/10 backdrop-blur-sm">
 							<div className="absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8">
-								<div className="absolute inset-0 opacity-20"
+								<div className="absolute inset-0 opacity-25"
 									style={{
-										background: "radial-gradient(circle, rgba(87,228,197,0.2) 0%, rgba(87,228,197,0) 70%)",
+										background: "radial-gradient(circle, rgba(0,255,136,0.22) 0%, rgba(0,255,136,0) 70%)",
 									}}
 								/>
 							</div>
 
 							<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between relative z-10">
 								<div className="flex items-start gap-4">
-									<div className="rounded-lg bg-[#1A3B3B] p-2">
-										<Cookie className="h-6 w-6 text-[#57E4C5]" />
+									<div className="rounded-lg bg-[#141414] p-2">
+										<Cookie className="h-6 w-6 text-[#00FF88]" />
 									</div>
 									<div className="flex-1">
-										<h3 className="mb-1 text-lg font-semibold text-black">We use cookies!</h3>
-										<p className="text-sm/relaxed text-black/70">
-											Altwy use cookies to enhance your browsing experience and analyze our traffic.
-											Your data will be handled in accordance with our <a href="/privacy-policy" className="underline text-[#1A3B3B] hover:text-[#1A3B3B]/70">privacy policy</a>.
+										<h3 className="mb-1 text-lg font-semibold text-white">We use cookies!</h3>
+										<p className="text-sm/relaxed text-white/70">
+											<span className="font-galano">Altwy</span> use cookies to enhance your browsing experience and analyze our traffic.
+											Your data will be handled in accordance with our <a href="/privacy-policy" className="underline text-[#00FF88] hover:text-[#33ffa3]">privacy policy</a>.
 										</p>
 									</div>
 								</div>
@@ -70,7 +70,7 @@ export default function CookieBanner() {
 										whileHover={{ scale: 1.02 }}
 										whileTap={{ scale: 0.98 }}
 										onClick={() => setCookieConsent(false)}
-										className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-black/70 transition-colors hover:bg-white/10"
+										className="rounded-lg border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-white/10"
 									>
 										Decline
 									</motion.button>
@@ -78,7 +78,7 @@ export default function CookieBanner() {
 										whileHover={{ scale: 1.02 }}
 										whileTap={{ scale: 0.98 }}
 										onClick={() => setCookieConsent(true)}
-										className="rounded-lg bg-[#1A3B3B] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1A3B3B]/90"
+										className="rounded-lg bg-[#00FF88] px-4 py-2 text-sm font-medium text-[#0a0a0a] transition-colors hover:bg-[#33ffa3]"
 									>
 										Accept
 									</motion.button>

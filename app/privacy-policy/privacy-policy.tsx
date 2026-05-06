@@ -2,66 +2,20 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu } from 'lucide-react'
-import { Inter } from 'next/font/google'
-import { useState } from 'react'
-const inter = Inter({ subsets: ['latin'] })
+import Navbar from "@/components/Navbar"
 
 export default function PrivacyPolicy() {
-	const [menuOpen, setMenuOpen] = useState(false)
-
-
 	return (
 
-		<div className={"container mx-auto px-4 py-16 max-w-4xl " + inter.className}>
+		<div className="container mx-auto px-4 py-16 max-w-4xl">
 			{/* Navbar */}
-			<nav className={`absolute top-0 left-0 right-0 z-50 transition-all duration-300`}>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex items-center justify-between h-16">
-						<div className="flex items-center">
-							<Link href="/" className="flex-shrink-0">
-								<Image
-									src="/logo.png"
-									alt="Altwy Logo"
-									width={110}
-									height={32}
-									className="w-22 h-8"
-								/>
-							</Link>
-						</div>
-						<div className="hidden md:flex items-center space-x-4">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 px-3 py-2 rounded-md text-sm font-medium">Contact</Link>
-						</div>
-						<div className="md:hidden">
-							<button
-								onClick={() => setMenuOpen(!menuOpen)}
-								className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-[#57e4c5]/10"
-							>
-								<Menu className="h-6 w-6" />
-							</button>
-						</div>
-					</div>
-				</div>
-				{menuOpen && (
-					<div className="md:hidden backdrop-blur-md">
-						<div className="px-2 pt-2 pb-3 space-y-1">
-							<Link href="/" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Home</Link>
-							<Link href="/company" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Company</Link>
-							<Link href="/news" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">News</Link>
-							<Link href="/contact" className="text-white hover:bg-[#57e4c5]/10 block px-3 py-2 rounded-md text-base font-medium">Contact</Link>
-						</div>
-					</div>
-				)}
-			</nav>
+			<Navbar isTransparent={true} />
 			<h1 className="text-4xl font-bold mb-8 mt-8">Privacy Policy</h1>
 
 			<section className="mb-8">
 				<h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
 				<p className="mb-4">
-					This Privacy Policy explains how Altwy ("we", "us", or "our") uses cookies and similar technologies on our website. We use cookies solely for Google Analytics to help us understand how visitors use our site.
+					This Privacy Policy explains how <span className="font-galano">Altwy</span> ("we", "us", or "our") uses cookies and similar technologies on our website. We use cookies solely for Google Analytics to help us understand how visitors use our site.
 				</p>
 			</section>
 
@@ -88,7 +42,7 @@ export default function PrivacyPolicy() {
 					You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. If you do this, however, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work.
 				</p>
 				<p className="mb-4">
-					To opt out of being tracked by Google Analytics across all websites, visit <a href="http://tools.google.com/dlpage/gaoptout" className="text-[#57e4c5] hover:underline">http://tools.google.com/dlpage/gaoptout</a>.
+					To opt out of being tracked by Google Analytics across all websites, visit <a href="http://tools.google.com/dlpage/gaoptout" className="text-[#00FF88] hover:underline">http://tools.google.com/dlpage/gaoptout</a>.
 				</p>
 			</section>
 
@@ -102,7 +56,7 @@ export default function PrivacyPolicy() {
 			<section className="mb-8">
 				<h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
 				<p className="mb-4">
-					If you have any questions about this Privacy Policy, please <Link href="/contact" className="text-[#57e4c5] hover:underline">contact us here.</Link>
+					If you have any questions about this Privacy Policy, please <Link href="/contact" className="text-[#00FF88] hover:underline">contact us here.</Link>
 				</p>
 			</section>
 		</div>
