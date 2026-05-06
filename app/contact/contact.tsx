@@ -11,7 +11,7 @@ const labelClass =
 	"mb-2 block text-xs font-medium uppercase tracking-wide text-white/75"
 
 const inputClass =
-	"w-full rounded-xl border border-white/[0.08] bg-[#161616] px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:border-white/20 focus:bg-[#1a1a1a] focus:ring-2 focus:ring-[#00FF88]/20"
+	"w-full rounded-none border border-white/[0.08] bg-[#161616] px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:border-white/20 focus:bg-[#1a1a1a] focus:ring-2 focus:ring-[#00FF88]/20"
 
 const textareaClass = `${inputClass} min-h-[140px] resize-y py-3`
 
@@ -70,7 +70,7 @@ export default function ContactPage() {
 						className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#00FF88]/20 px-4 py-1"
 						variants={fadeInUpVariants}
 					>
-						<span className="text-sm font-medium text-[#00FF88]">Contact</span>
+						<span className="text-sm font-medium text-[#00FF88]">Get in Touch</span>
 					</motion.div>
 					<motion.h1
 						className="relative z-10 mb-4 text-4xl font-bold tracking-tight text-white md:text-5xl"
@@ -89,7 +89,7 @@ export default function ContactPage() {
 						className="relative z-10 mx-auto mt-8 w-full max-w-md"
 						variants={fadeInUpVariants}
 					>
-						<div className="flex overflow-hidden rounded-xl border border-white/[0.1] bg-[#161616]">
+						<div className="flex overflow-hidden rounded-none border border-white/[0.1] bg-[#161616]">
 							<div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3">
 								<Mail className="h-4 w-4 shrink-0 text-[#00FF88]" strokeWidth={1.75} />
 								<span className="select-all truncate font-mono text-sm text-white/90">
@@ -259,7 +259,7 @@ export default function ContactPage() {
 						<div className="space-y-4 pt-2">
 							{submitStatus === "success" && (
 								<p
-									className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/80"
+									className="rounded-none border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/80"
 									role="status"
 								>
 									Thank you for your message. We will get back to you shortly.

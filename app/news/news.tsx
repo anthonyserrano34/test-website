@@ -5,13 +5,37 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import Image from "next/image"
 import Navbar from "@/components/Navbar"
-import { BentoCardShell } from "@/components/ui/bento-card-shell"
 import { SubpageHeroHeader } from "@/components/ui/subpage-hero-header"
+
+type NewsContentType = "text" | "video"
+
+type NewsItem = {
+	id: number
+	date: string
+	title: string
+	contentType: NewsContentType
+	content: string
+	/** URL absolue ou chemin `/...` dans `public` */
+	image?: string
+	imageAlt?: string
+}
 
 // Pour le balisage: **gras** __grand__ *italique*
 // TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
-const newsItems = [
+const newsItems: NewsItem[] = [
+	{
+		id: 22,
+		date: "May 2026",
+		title: "[TEST] Petit test avec une image",
+		contentType: "text",
+		image: "/dashboard.png",
+		imageAlt: "Tableau de bord Altwy",
+		content: `Je pose ça là pour voir ce que ça donne avec une image.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+	},
 	{
 		id: 21,
 		date: "Jun 2025",
@@ -615,99 +639,127 @@ export default function NewsPage() {
 						News & Updates
 					</motion.h1>
 					<motion.p
-						className="text-white/70 text-lg max-w-2xl mx-auto relative z-10"
+						className="text-lg max-w-2xl mx-auto relative z-10 text-white/[0.74]"
 						variants={fadeInUpVariants}
 					>
 						Stay informed about our latest news.
 					</motion.p>
 				</motion.div>
 
-				{/* News feed */}
-				<motion.div
-					ref={ref}
-					initial="hidden"
-					animate={inView ? "visible" : "hidden"}
-					variants={staggerContainer}
-					className="space-y-12 relative"
+				{/* News feed — changelog-style timeline (panneau plus sombre) */}
+				<div
+					className="relative border border-white/[0.07] bg-[#080808] p-5 sm:p-7 md:p-8 [--news-surface:#080808]"
 				>
-					{newsItems.map((item, itemIndex) => {
-						const glows = ["top-right", "top-left", "center", "bottom-right"] as const
-						const glow = glows[itemIndex % glows.length]
-						return (
-						<motion.div key={item.id} variants={fadeInUpVariants} className="relative">
-							<BentoCardShell glow={glow} contentClassName="p-6 md:p-8">
-							<div className="space-y-4">
-								<div className="flex items-center justify-between gap-3">
-									<div className="rounded-full border border-[#00FF88]/25 bg-[#00FF88]/10 px-3 py-1 text-xs font-medium text-[#00FF88]">
-										{item.date}
-									</div>
-									{item.contentType === "text" && (
-										<motion.button
-											type="button"
-											className="flex cursor-pointer items-center gap-2 text-sm font-medium text-[#00FF88] transition-colors hover:text-[#00FF88]/80"
-											whileHover={{ scale: 1.02 }}
-											whileTap={{ scale: 0.98 }}
-											onClick={() => {
-												if (!expandedItems.includes(item.id) && window.gtag) {
-													window.gtag('event', 'see_more_button_news_page', {
-														event_category: 'engagement',
-														event_label: 'User clicked on See more button on a news',
-													});
-												}
-												toggleExpand(item.id);
-											}}
-										>
-											{expandedItems.includes(item.id) ? (
-												<>
-													<span>See less</span>
-													<ChevronUp className="h-4 w-4" />
-												</>
-											) : (
-												<>
-													<span>See more</span>
-													<ChevronDown className="h-4 w-4" />
-												</>
-											)}
-										</motion.button>
-									)}
-								</div>
-								<h3 className="text-xl font-medium tracking-tight text-white md:text-2xl">
-									{item.title}
-								</h3>
-								<AnimatePresence>
-									<motion.div
-										initial={{ height: 0, opacity: 0 }}
-										animate={{
-											height: expandedItems.includes(item.id) || item.contentType === "video" ? "auto" : "80px",
-											opacity: 1
-										}}
-										exit={{ height: 0, opacity: 0 }}
-										transition={{ duration: 0.3 }}
-										className="overflow-hidden"
+					<motion.div
+						ref={ref}
+						initial="hidden"
+						animate={inView ? "visible" : "hidden"}
+						variants={staggerContainer}
+						className="relative"
+					>
+						{/* Continuous vertical axis */}
+						<div
+							className="pointer-events-none absolute left-[10px] top-2 bottom-2 w-px bg-gradient-to-b from-white/[0.06] via-white/[0.14] to-white/[0.06]"
+							aria-hidden
+						/>
+						<div className="divide-y divide-white/[0.08]">
+							{newsItems.map((item) => (
+								<motion.article
+									key={item.id}
+									variants={fadeInUpVariants}
+									className="relative py-10 pl-8 first:pt-2 last:pb-2 sm:pl-10 md:pl-11"
+								>
+									{/* Node on the timeline */}
+									<div
+										className="absolute left-0 top-[1.35rem] flex h-5 w-5 items-center justify-center sm:top-[1.6rem]"
+										aria-hidden
 									>
-										{item.contentType === "text" ? (
-											<div className="whitespace-pre-wrap text-sm leading-relaxed text-slate-400">
-												{formatText(item.content)}
-											</div>
-										) : (
-											<div className="relative mt-4 aspect-video">
-												<iframe
-													src={item.content}
-													title={item.title}
-													allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-													allowFullScreen
-													className="absolute inset-0 h-full w-full rounded-xl border border-white/[0.06]"
+										<span className="h-2.5 w-2.5 rounded-full bg-[#00FF88] shadow-[0_0_0_3px_var(--news-surface)] ring-1 ring-[#00FF88]/40 sm:h-3 sm:w-3 sm:shadow-[0_0_0_4px_var(--news-surface)]" />
+									</div>
+
+									<div className="space-y-4">
+										<div className="flex flex-wrap items-start justify-between gap-3">
+											<time className="text-sm tabular-nums text-white/[0.52]">
+												{item.date}
+											</time>
+											{item.contentType === "text" && (
+												<motion.button
+													type="button"
+													className="flex cursor-pointer items-center gap-2 text-sm font-medium text-[#00FF88] transition-colors hover:text-[#00FF88]/80"
+													whileHover={{ scale: 1.02 }}
+													whileTap={{ scale: 0.98 }}
+													onClick={() => {
+														if (!expandedItems.includes(item.id) && window.gtag) {
+															window.gtag('event', 'see_more_button_news_page', {
+																event_category: 'engagement',
+																event_label: 'User clicked on See more button on a news',
+															});
+														}
+														toggleExpand(item.id);
+													}}
+												>
+													{expandedItems.includes(item.id) ? (
+														<>
+															<span>See less</span>
+															<ChevronUp className="h-4 w-4" />
+														</>
+													) : (
+														<>
+															<span>See more</span>
+															<ChevronDown className="h-4 w-4" />
+														</>
+													)}
+												</motion.button>
+											)}
+										</div>
+										<h3 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
+											{item.title}
+										</h3>
+										{item.image ? (
+											<div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-white/[0.08] bg-white/[0.03]">
+												<Image
+													src={item.image}
+													alt={item.imageAlt ?? item.title}
+													fill
+													className="object-cover"
+													sizes="(max-width: 768px) 100vw, 56rem"
 												/>
 											</div>
-										)}
-									</motion.div>
-								</AnimatePresence>
-							</div>
-							</BentoCardShell>
-						</motion.div>
-						)
-					})}
-				</motion.div>
+										) : null}
+										<AnimatePresence>
+											<motion.div
+												initial={{ height: 0, opacity: 0 }}
+												animate={{
+													height: expandedItems.includes(item.id) || item.contentType === "video" ? "auto" : "80px",
+													opacity: 1
+												}}
+												exit={{ height: 0, opacity: 0 }}
+												transition={{ duration: 0.3 }}
+												className="overflow-hidden"
+											>
+												{item.contentType === "text" ? (
+													<div className="whitespace-pre-wrap text-sm leading-relaxed text-white/[0.72]">
+														{formatText(item.content)}
+													</div>
+												) : (
+													<div className="relative mt-2 aspect-video">
+														<iframe
+															src={item.content}
+															title={item.title}
+															allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+															allowFullScreen
+															className="absolute inset-0 h-full w-full rounded-lg border border-white/[0.08]"
+														/>
+													</div>
+												)}
+											</motion.div>
+										</AnimatePresence>
+									</div>
+								</motion.article>
+							))}
+						</div>
+					</motion.div>
+				</div>
 			</main>
 		</div>
 	)

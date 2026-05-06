@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client"
 import Link from "next/link"
-import Image from "next/image"
 import Navbar from "@/components/Navbar"
 
 export default function PrivacyPolicy() {
