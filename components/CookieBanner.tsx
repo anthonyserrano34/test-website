@@ -43,7 +43,7 @@ export default function CookieBanner() {
 					className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
 				>
 					<div className="mx-auto max-w-7xl">
-						<div className="relative overflow-hidden rounded-xl border border-[#00FF88]/20 bg-[#0a0a0a] p-6 shadow-lg shadow-[#00FF88]/10 backdrop-blur-sm">
+						<div className="relative overflow-hidden rounded-xl bg-[#0a0a0a] p-6 backdrop-blur-sm">
 							<div className="absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8">
 								<div className="absolute inset-0 opacity-25"
 									style={{
