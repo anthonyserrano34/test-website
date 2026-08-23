@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "@/app/globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieBannerWrapper from "@/components/CookieBannerWrapper";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Suspense } from "react";
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
 				className={`${inter.variable} ${spaceGrotesk.variable} ${galanoGrotesque.variable} antialiased`}
 			>
 				{children}
+				<SiteFooter />
 				<CookieBannerWrapper />
 			</body>
 		</html>

@@ -2,7 +2,6 @@ import DemoBackground from "@/components/ui/demo";
 import { Component as BackgroundSnippets } from "@/components/ui/background-snippets";
 import { FlickeringGrid } from "@/registry/magicui/flickering-grid";
 
-/** Identique au radial du hero (`demo.tsx`) : ellipse centrée en haut, fondu vers transparent. */
 const HEADER_LIGHT_MASK =
 	"radial-gradient(ellipse 80% 80% at 50% -20%, white, transparent)";
 
@@ -11,10 +10,6 @@ type SubpageHeroHeaderProps = {
 	className?: string;
 };
 
-/**
- * Fond + lumière verticale ; la grille clignotante partage le même masque elliptique
- * et `overflow-hidden` sur le hero pour ne rien faire dépasser.
- */
 export function SubpageHeroHeader({
 	heightClassName = "h-[min(100vh,820px)]",
 	className,

@@ -2,15 +2,42 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { Menu, ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, ChevronDown, ArrowUpRight, Download } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 interface NavbarProps {
     isTransparent?: boolean;
 }
 
 export default function Navbar({ isTransparent = false }: NavbarProps) {
+    const pathname = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
+    const [mobileCompanyMenuOpen, setMobileCompanyMenuOpen] = useState(false);
+
+    useEffect(() => {
+        setMenuOpen(false);
+        setCompanyMenuOpen(false);
+        setMobileCompanyMenuOpen(false);
+    }, [pathname]);
+
+    const topLinks = [
+        { href: "/", label: "Home" },
+        { href: "/news", label: "News" },
+    ];
+    const companyLinks = [
+        {
+            href: "/company/altwy",
+            title: "Altwy",
+            description: "About the company",
+        },
+        {
+            href: "/company/our-team",
+            title: "Our Team",
+            description: "The people behind it",
+        },
+    ];
 
     return (
         <>
@@ -23,8 +50,7 @@ export default function Navbar({ isTransparent = false }: NavbarProps) {
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-20">
-                        {/* Logo on the left */}
-                        <div className="flex-shrink-0 flex items-center w-1/4">
+                        <div className="flex items-center gap-8">
                             <Link href="/" className="flex-shrink-0">
                                 <Image
                                     src="/logo.png"
@@ -34,43 +60,84 @@ export default function Navbar({ isTransparent = false }: NavbarProps) {
                                     className="w-22 h-8"
                                 />
                             </Link>
+                            <div className="hidden md:flex items-center gap-1">
+                                {topLinks.map((item) => (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className="text-white hover:text-[#00FF88] transition-colors duration-300 px-3 py-2 text-sm font-medium"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ))}
+
+                                <div
+                                    className="relative pb-2 -mb-2"
+                                    onMouseEnter={() => setCompanyMenuOpen(true)}
+                                    onMouseLeave={() => setCompanyMenuOpen(false)}
+                                >
+                                    <button
+                                        type="button"
+                                        onClick={() => setCompanyMenuOpen((prev) => !prev)}
+                                        className={`inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition-all duration-300 ${
+                                            companyMenuOpen
+                                                ? "bg-white/[0.12] text-white"
+                                                : "text-white hover:bg-white/[0.08] hover:text-white"
+                                        }`}
+                                    >
+                                        Company
+                                        <ChevronDown
+                                            className={`h-4 w-4 transition-all duration-300 ease-out ${
+                                                companyMenuOpen
+                                                    ? "translate-y-[1px] rotate-180"
+                                                    : "translate-y-0 rotate-0"
+                                            }`}
+                                        />
+                                    </button>
+
+                                    <div
+                                        className={`absolute left-0 top-full w-64 origin-top overflow-hidden rounded-xl border border-white/10 bg-[#111111]/95 shadow-2xl backdrop-blur-xl ring-1 ring-white/5 transition-all duration-200 ease-out ${
+                                            companyMenuOpen
+                                                ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+                                                : "pointer-events-none -translate-y-1 scale-[0.98] opacity-0"
+                                        }`}
+                                    >
+                                        <div className="p-1.5">
+                                            {companyLinks.map((item) => (
+                                                <Link
+                                                    key={item.href}
+                                                    href={item.href}
+                                                    className="block rounded-lg px-3 py-2.5 transition-colors duration-200 hover:bg-white/[0.08]"
+                                                >
+                                                    <p className="text-sm font-medium text-white">
+                                                        {item.title}
+                                                    </p>
+                                                    <p className="mt-0.5 text-xs text-white/55">
+                                                        {item.description}
+                                                    </p>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Links in the center */}
-                        <div className="hidden md:flex items-center justify-center space-x-8 w-2/4">
-                            <Link
-                                href="/"
-                                className="text-white hover:text-[#00FF88] transition-colors duration-300 px-3 py-2 text-sm font-medium"
-                            >
-                                Home
-                            </Link>
-                            <Link
-                                href="/company"
-                                className="text-white hover:text-[#00FF88] transition-colors duration-300 px-3 py-2 text-sm font-medium"
-                            >
-                                Company
-                            </Link>
-                            <Link
-                                href="/news"
-                                className="text-white hover:text-[#00FF88] transition-colors duration-300 px-3 py-2 text-sm font-medium"
-                            >
-                                News
-                            </Link>
-                        </div>
-
-                        {/* Contact Us on the right */}
-                        <div className="hidden md:flex items-center justify-end w-1/4">
+                        {/* CTA on the right */}
+                        <div className="hidden md:flex items-center gap-2">
                             <Link
                                 href="/contact"
-                                className="group relative inline-flex w-full items-center justify-center border border-neutral-800 bg-white px-4 py-2 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88] sm:w-auto"
+                                className="inline-flex h-[38px] min-w-[132px] items-center justify-center gap-1.5 border border-neutral-200 bg-white px-3.5 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88]"
                             >
-                                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#00FF88] opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-1 -translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0"></div>
-                                <div className="group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 opacity-0 w-2 h-2 border-[#00FF88] border-r border-b absolute right-0 bottom-0 translate-x-1 translate-y-1"></div>
-
-                                <div className="relative z-10 flex w-full items-center justify-center gap-2 sm:justify-start">
-                                    Contact Us
-                                    <ArrowUpRight className="h-4 w-4" />
-                                </div>
+                                <span>Contact Us</span>
+                                <ArrowUpRight className="h-4 w-4" />
+                            </Link>
+                            <Link
+                                href="/download"
+                                className="inline-flex h-[38px] min-w-[132px] items-center justify-center gap-1.5 border border-[#00FF88] bg-[#00FF88] px-3.5 text-sm font-medium text-black transition-colors duration-300 hover:border-[#33FFA0] hover:bg-[#33FFA0]"
+                            >
+                                <span>Download</span>
+                                <Download className="h-4 w-4" />
                             </Link>
                         </div>
 
@@ -90,36 +157,62 @@ export default function Navbar({ isTransparent = false }: NavbarProps) {
                 {menuOpen && (
                     <div className="md:hidden bg-[#0E0E0E]/95 backdrop-blur-md border-t border-neutral-800">
                         <div className="px-4 pt-2 pb-6 space-y-1">
-                            <Link
-                                href="/"
-                                className="text-white hover:bg-[#00FF88]/10 block px-3 py-3 rounded-md text-base font-medium"
-                            >
-                                Home
-                            </Link>
-                            <Link
-                                href="/company"
-                                className="text-white hover:bg-[#00FF88]/10 block px-3 py-3 rounded-md text-base font-medium"
-                            >
-                                Company
-                            </Link>
-                            <Link
-                                href="/news"
-                                className="text-white hover:bg-[#00FF88]/10 block px-3 py-3 rounded-md text-base font-medium"
-                            >
-                                News
-                            </Link>
-                            <div className="pt-4 pb-2">
+                            {topLinks.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className="text-white hover:bg-[#00FF88]/10 block px-3 py-3 rounded-md text-base font-medium"
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+                            <div>
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileCompanyMenuOpen((prev) => !prev)}
+                                    className="w-full text-white hover:bg-[#00FF88]/10 flex items-center justify-between px-3 py-3 rounded-md text-base font-medium"
+                                >
+                                    <span>Company</span>
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-all duration-300 ease-out ${
+                                            mobileCompanyMenuOpen ? "rotate-180" : ""
+                                        }`}
+                                    />
+                                </button>
+                                <div
+                                    className={`ml-3 grid overflow-hidden border-l border-white/10 transition-all duration-300 ease-out ${
+                                        mobileCompanyMenuOpen
+                                            ? "mt-1 grid-rows-[1fr] opacity-100"
+                                            : "mt-0 grid-rows-[0fr] opacity-0"
+                                    }`}
+                                >
+                                    <div className="overflow-hidden">
+                                        {companyLinks.map((item) => (
+                                            <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                className="block px-3 py-2 text-sm text-white/90 hover:bg-[#00FF88]/10"
+                                            >
+                                                {item.title}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="pt-3">
                                 <Link
                                     href="/contact"
-                                    className="group relative inline-flex w-full items-center justify-center border border-neutral-800 bg-white px-4 py-3 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88]"
+                                    className="mb-2 inline-flex h-[38px] w-full items-center justify-center gap-1.5 border border-neutral-200 bg-white px-3.5 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88]"
                                 >
-                                    <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#00FF88] opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-1 -translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0"></div>
-                                    <div className="group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 opacity-0 w-2 h-2 border-[#00FF88] border-r border-b absolute right-0 bottom-0 translate-x-1 translate-y-1"></div>
-
-                                    <div className="relative z-10 flex w-full items-center justify-center gap-2">
-                                        Contact Us
-                                        <ArrowUpRight className="h-4 w-4" />
-                                    </div>
+                                    <span>Contact Us</span>
+                                    <ArrowUpRight className="h-4 w-4" />
+                                </Link>
+                                <Link
+                                    href="/download"
+                                    className="inline-flex h-[38px] w-full items-center justify-center gap-1.5 border border-[#00FF88] bg-[#00FF88] px-3.5 text-sm font-medium text-black transition-colors duration-300 hover:border-[#33FFA0] hover:bg-[#33FFA0]"
+                                >
+                                    <span>Download</span>
+                                    <Download className="h-4 w-4" />
                                 </Link>
                             </div>
                         </div>

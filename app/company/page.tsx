@@ -1,10 +1,10 @@
-import { Metadata } from 'next'
-import CompanyPage from './company'
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: 'Altwy - Company',
-}
+	title: "Altwy - Company",
+};
 
 export default function Page() {
-    return <CompanyPage />
+	redirect("/company/altwy");
 }

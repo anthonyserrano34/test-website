@@ -6,24 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "hash-admin-password": "node scripts/hash-admin-password.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^15.0.4",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
+    "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "fix-react2shell-next": "^1.1.4",
     "framer-motion": "^11.11.10",
+    "jose": "^6.2.9",
     "lucide-react": "^0.454.0",
     "next": "15.0.7",
     "nextjs-google-analytics": "^2.3.7",
     "react": "18.2.0",
-	"react-dom": "18.2.0",
+    "react-dom": "18.2.0",
     "react-intersection-observer": "^9.13.1",
+    "resend": "^6.20.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -24,9 +24,6 @@ type BentoCardShellProps = {
 	clip?: boolean;
 };
 
-/**
- * Enveloppe alignée sur les cartes bento de l’index (`page.tsx` solutions).
- */
 export function BentoCardShell({
 	children,
 	className,

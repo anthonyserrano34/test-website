@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client"
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
+import TopNavbar from "@/components/TopNavbar"
 
 export default function PrivacyPolicy() {
 	return (
 
 		<div className="container mx-auto px-4 py-16 max-w-4xl">
 			{/* Navbar */}
-			<Navbar isTransparent={true} />
+			<TopNavbar isTransparent />
 			<h1 className="text-4xl font-bold mb-8 mt-8">Privacy Policy</h1>
 
 			<section className="mb-8">

@@ -11,31 +11,72 @@ import {
 	Cpu,
 	LayoutDashboard,
 	Layers,
-	Linkedin,
-	ArrowRight,
-	FileText,
+	ArrowUpRight,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Marquee } from "@/components/ui/marquee";
+import { Particles } from "@/components/ui/particles";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { SpotlightBorder } from "@/components/ui/spotlight-border";
 import { ImpactMetricsFrame } from "@/components/ui/impact-metrics-frame";
 import { NumberTicker } from "@/components/ui/number-ticker";
+import { MarketInsightCard } from "@/components/ui/market-insight-card";
+import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { ProductRoadmap } from "@/components/ui/product-roadmap";
+import { SiliconSection } from "@/components/ui/silicon-section";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/Navbar";
+import TopNavbar from "@/components/TopNavbar";
+
+const PARTNER_LOGOS = [
+	{ src: "/bpifrance-logo.png", alt: "BPI France Logo" },
+	{ src: "/logo-france2030.png", alt: "France 2030 Logo" },
+	{ src: "/logo-eurostack.png", alt: "EuroStack Logo" },
+	{ src: "/occitanie-logo.png", alt: "Région Occitanie Logo" },
+	{ src: "/cyllene-logo.png", alt: "Cyllene Logo" },
+] as const;
+
+const MARKET_INSIGHTS = [
+	{
+		sources: [
+			{ name: "The Wall Street Journal", logo: "/press/wsj.svg" },
+			{ name: "Tom's Hardware", logo: "/press/toms-hardware.svg" },
+		],
+		headline: "The Grid at Breaking Point",
+		description:
+			"Data center expansion projects face severe power constraints worldwide, leading to cancellations and delays due to grid capacity limits.",
+		cta: "Read Analysis",
+		href: "https://www.tomshardware.com/tech-industry/artificial-intelligence/half-of-planned-us-data-center-builds-have-been-delayed-or-canceled-growth-limited-by-shortages-of-power-infrastructure-and-parts-from-china-the-ai-build-out-flips-the-breakers",
+	},
+	{
+		sources: [
+			{ name: "Network World", logo: "/press/network-world.svg" },
+			{ name: "IT Vortex", logo: "/press/it-vortex.svg" },
+		],
+		headline: "Up to 1,500% License Price Hikes",
+		description:
+			"Broadcom's new licensing model is forcing over 80% of organizations to actively seek alternatives and plan workload migrations.",
+		cta: "Market Insight",
+		href: "https://www.networkworld.com/article/3994107/vmware-customers-in-europe-face-up-to-1500-price-increases-under-broadcom-ownership.html",
+	},
+	{
+		sources: [
+			{ name: "Gartner", logo: "/press/gartner.svg" },
+			{ name: "CIO Magazine", logo: "/press/cio.svg" },
+		],
+		headline: "The Geopatriation Era",
+		description:
+			"Sovereign Cloud spending is accelerating as enterprise IT leaders abandon 'Cloud-First' approaches to regain cost predictability and total control over data.",
+		cta: "Read Gartner Report",
+		href: "https://www.gartner.com/en/newsroom/press-releases/2026-02-09-gartner-says-worldwide-sovereign-cloud-iaas-spending-will-total-us-dollars-80-billion-in-2026",
+	},
+];
 
 export default function HomePage() {
-	const [isNavbarTransparent, setIsNavbarTransparent] = useState(true);
-
 	const [heroRef, heroInView] = useInView({
 		threshold: 0,
 		initialInView: true,
 	});
 	const [videoRef] = useInView({ triggerOnce: true, threshold: 0.1 });
-	const [featureRef, featureInView] = useInView({
-		triggerOnce: true,
-		threshold: 0.1,
-	});
 	const [impactRef, impactInView] = useInView({
 		triggerOnce: true,
 		threshold: 0.1,
@@ -48,51 +89,19 @@ export default function HomePage() {
 		triggerOnce: true,
 		threshold: 0.1,
 	});
+	const [founderRef, founderInView] = useInView({
+		triggerOnce: true,
+		threshold: 0.1,
+	});
 	const [linkedinRef, linkedinInView] = useInView({
 		triggerOnce: true,
 		threshold: 0.1,
 	});
 
-	useEffect(() => {
-		setIsNavbarTransparent(heroInView);
-	}, [heroInView]);
-
 	const fadeInUpVariants = {
 		hidden: { opacity: 0, y: 20 },
 		visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
 	};
-
-	const logos = [
-		{ src: "/bpifrance-logo.png", alt: "BPI France Logo" },
-		{ src: "/logo-france2030.png", alt: "France 2030 Logo" },
-		{ src: "/slush_logo_white.png", alt: "SLUSH Logo" },
-		{ src: "/occitanie-logo.png", alt: "Région Occitanie Logo" },
-		{ src: "/cyllene-logo.png", alt: "Cyllene Logo" },
-	];
-
-	const MarqueeLogos = () => (
-		<Marquee speed={20}>
-			{logos.map((logo, index) => (
-				<div
-					key={index}
-					className="flex-shrink-0 flex items-center justify-center"
-					style={{
-						width: "200px",
-						marginLeft: "20px",
-						marginRight: "20px",
-					}}
-				>
-					<Image
-						src={logo.src}
-						alt={logo.alt}
-						width={280}
-						height={110}
-						className="!h-10 sm:!h-12 md:!h-14 lg:!h-16 xl:!h-18 w-auto object-contain"
-					/>
-				</div>
-			))}
-		</Marquee>
-	);
 
 	const impactStats = [
 		{
@@ -117,7 +126,7 @@ export default function HomePage() {
 	return (
 		<div className="min-h-screen bg-[var(--background)]">
 			{/* Navbar */}
-			<Navbar isTransparent={isNavbarTransparent} />
+			<TopNavbar isTransparent={heroInView} />
 
 			{/* Hero section */}
 			<motion.div
@@ -149,37 +158,20 @@ export default function HomePage() {
 					)}
 				/>
 
-				{/* Particle effect */}
-				<div className="absolute inset-0 overflow-hidden">
-					{[...Array(150)].map((_, i) => (
-						<motion.div
-							key={i}
-							className="absolute rounded-full bg-teal-300 opacity-20"
-							style={{
-								width: Math.random() * 2 + 1 + "px",
-								height: Math.random() * 2 + 1 + "px",
-								top: Math.random() * 100 + "%",
-								left: Math.random() * 100 + "%",
-							}}
-							animate={{
-								y: [0, -30, 0],
-								opacity: [0.2, 0.5, 0.2],
-								scale: [1, 1.2, 1],
-							}}
-							transition={{
-								duration: Math.random() * 2 + 3,
-								repeat: Infinity,
-								delay: Math.random() * 2,
-							}}
-						/>
-					))}
-				</div>
+				<Particles
+					className="z-[1]"
+					quantity={90}
+					ease={80}
+					staticity={60}
+					size={1.5}
+					color="#5EEAD4"
+				/>
 
 				{/* Hero Content */}
 				<div className="relative z-10 px-4 pt-32 pb-4 sm:pb-6 md:pb-8 lg:pb-0">
 					<div className="max-w-4xl mx-auto text-center">
 						<motion.div
-							className="inline-flex items-center gap-2 bg-[#0f1713] rounded-full px-4 py-1 mb-8"
+							className="mb-8 inline-flex items-center gap-2 rounded-full bg-[#0f1713] px-4 py-1"
 							variants={fadeInUpVariants}
 						>
 							<svg
@@ -248,14 +240,15 @@ export default function HomePage() {
 									</span>
 								</span>{" "}
 								develops innovative cloud management software on{" "}
-								<b>ARM</b>, <b>RISC-V</b> and <b>INTEL</b>, to
-								optimize data center operations and reduce
-								energy consumption.
+								<b>ARM</b>, <b>RISC-V</b>, <b>AMD</b> and{" "}
+								<b>INTEL</b>, to optimize data center operations
+								and reduce energy consumption. Built on 100%
+								European R&amp;D.
 							</p>
 						</motion.div>
 
 						{/* Dashboard Preview Section */}
-						<div className="max-w-4xl mx-auto mb-12 relative">
+						<div className="max-w-4xl mx-auto mb-8 md:mb-10 relative">
 							{/* Dispersed upward halo (outside 3D transform for better vertical spread into the header) */}
 							<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[140%] h-[600px] -translate-y-[50%] bg-[#00FF88]/10 blur-[120px] pointer-events-none z-0 rounded-full" />
 							<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[350px] -translate-y-[40%] bg-[#00FF88]/20 blur-[80px] pointer-events-none z-0 rounded-full" />
@@ -293,37 +286,88 @@ export default function HomePage() {
 								</div>
 							</motion.div>
 						</div>
+
+						<motion.div
+							className="relative w-full pb-6 sm:pb-8 md:pb-12"
+							variants={fadeInUpVariants}
+						>
+							<div className="mb-5 flex items-center justify-center gap-3 sm:mb-6">
+								<span className="h-px w-6 bg-gradient-to-r from-transparent to-[#00FF88]/35 sm:w-10" />
+								<AnimatedShinyText className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50 sm:text-xs">
+									Trusted by european leaders
+								</AnimatedShinyText>
+								<span className="h-px w-6 bg-gradient-to-l from-transparent to-[#00FF88]/35 sm:w-10" />
+							</div>
+							<Marquee
+								pauseOnHover
+								className="[--duration:16s] [--gap:2.5rem]"
+							>
+								{PARTNER_LOGOS.map((logo) => (
+									<div
+										key={logo.src}
+										className="flex h-16 w-[180px] shrink-0 items-center justify-center sm:h-[72px] sm:w-[200px]"
+									>
+										<Image
+											src={logo.src}
+											alt={logo.alt}
+											width={280}
+											height={110}
+											draggable={false}
+											className="h-10 w-auto max-w-none object-contain select-none sm:h-12 md:h-14"
+										/>
+									</div>
+								))}
+							</Marquee>
+						</motion.div>
 					</div>
 				</div>
 			</motion.div>
 
-			{/* Partners Logos Marquee */}
-			<motion.div
-				className="max-w-4xl mx-auto mb-0 sm:mb-2 md:mb-6 lg:mb-12 py-1 sm:py-2 md:py-3 lg:py-6"
-				variants={fadeInUpVariants}
-			>
-				<div className="w-full overflow-hidden">
-					<MarqueeLogos />
-				</div>
-			</motion.div>
-
-			{/* Altwy Impact Section */}
+			{/* Market Reality */}
 			<motion.section
-				className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-16 md:pt-20 md:pb-24"
+				className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-12 md:pt-20 md:pb-16"
 				ref={impactRef}
 				initial="hidden"
 				animate={impactInView ? "visible" : "hidden"}
 				variants={fadeInUpVariants}
 			>
-				<div className="max-w-4xl mb-10 md:mb-16 mx-auto md:mx-0 text-center md:text-left">
+				<div className="mb-8 md:mb-12 text-center md:text-left">
+					<p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[#00FF88]/80 sm:text-xs">
+						Global Market Reality
+					</p>
 					<h2 className="text-3xl md:text-4xl text-white font-medium tracking-tight">
-						The market is screaming for a solution,
-						<br />
-						Here&apos;s the Altwy impact
+						The market is screaming for a solution
 					</h2>
 				</div>
 
-				<ImpactMetricsFrame className="max-w-6xl gap-y-10 px-5 py-8 sm:px-8 sm:py-10 md:gap-y-0 md:py-12">
+				<div className="border-t border-white/10">
+					{MARKET_INSIGHTS.map((insight, index) => (
+						<MarketInsightCard
+							key={insight.headline}
+							insight={insight}
+							index={index}
+						/>
+					))}
+				</div>
+			</motion.section>
+
+			{/* Altwy Impact */}
+			<motion.section
+				className="relative z-10 bg-[#121212] px-4 py-16 sm:px-6 md:py-24"
+				initial="hidden"
+				animate={impactInView ? "visible" : "hidden"}
+				variants={fadeInUpVariants}
+			>
+				<div className="mx-auto max-w-6xl">
+					<div className="mb-10 text-center md:mb-16 md:text-left">
+						<BlurFade delay={0.05}>
+							<h3 className="text-3xl font-medium tracking-tight text-white md:text-4xl">
+								Here&apos;s the Altwy impact
+							</h3>
+						</BlurFade>
+					</div>
+
+					<ImpactMetricsFrame className="max-w-6xl gap-y-10 px-5 py-8 sm:px-8 sm:py-10 md:gap-y-0 md:py-12">
 					<div className="relative grid grid-cols-1 gap-y-12 md:grid-cols-3 md:gap-y-0 md:gap-x-0">
 						{impactStats.map((stat, index) => (
 							<motion.div
@@ -331,7 +375,6 @@ export default function HomePage() {
 								className="relative flex flex-col items-center text-center md:items-start md:text-left md:px-8 lg:px-10"
 								variants={fadeInUpVariants}
 							>
-								{/* Beam Glow Separator (Desktop — between columns only) */}
 								{index < impactStats.length - 1 && (
 									<div className="hidden md:block absolute top-1/2 right-0 h-24 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[#00FF88]/50 to-transparent shadow-[0_0_15px_rgba(0,255,136,0.6)]" />
 								)}
@@ -368,9 +411,61 @@ export default function HomePage() {
 						))}
 					</div>
 				</ImpactMetricsFrame>
+				</div>
 			</motion.section>
 
-			{/* Green Efficiency Section */}
+			{/* Founder Perspective */}
+			<motion.section
+				className="relative z-10 px-4 py-16 md:py-24"
+				ref={founderRef}
+				initial="hidden"
+				animate={founderInView ? "visible" : "hidden"}
+				variants={fadeInUpVariants}
+			>
+				<div className="mx-auto max-w-6xl">
+					<p className="mb-8 text-[11px] font-medium uppercase tracking-[0.22em] text-[#00FF88]/80 sm:mb-12 sm:text-xs">
+						Founder Perspective
+					</p>
+
+					<div className="grid items-start gap-10 md:grid-cols-[minmax(0,1fr)_168px] lg:grid-cols-[minmax(0,1fr)_176px] md:gap-12 lg:gap-16">
+						<BlurFade delay={0.08}>
+							<blockquote className="border-l border-[#00FF88]/40 pl-6 md:pl-8">
+								<p className="text-2xl font-light leading-snug tracking-tight text-white md:text-3xl lg:text-[2.15rem] lg:leading-snug">
+									The AI revolution cannot happen on 20-year-old
+									cloud architecture. We built Altwy to extract 4x
+									more compute per watt, transforming existing
+									datacenters from energy-guzzling bottlenecks
+									into hyper-efficient powerhouses.
+								</p>
+							</blockquote>
+						</BlurFade>
+
+						<div className="mx-auto flex w-full max-w-[148px] flex-col items-center gap-3 text-center md:mx-0 md:max-w-none md:items-start md:text-left">
+							<div className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-white/10">
+								<Image
+									src="/company/christophe_lambert.jpg"
+									alt="Christophe Lambert"
+									fill
+									sizes="176px"
+									className="object-cover object-top"
+								/>
+							</div>
+							<div>
+								<p className="text-base font-medium tracking-tight text-white">
+									Christophe Lambert
+								</p>
+								<p className="mt-0.5 text-sm text-white/50">
+									Chief Executive Officer
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</motion.section>
+
+			<ProductRoadmap />
+
+			{false && (
 			<motion.section
 				className="relative min-h-[600px] overflow-hidden"
 				ref={securityRef}
@@ -605,6 +700,7 @@ export default function HomePage() {
 					</div>
 				</div>
 			</motion.section>
+			)}
 
 			{/* Solutions — bento grid */}
 			<motion.section
@@ -615,10 +711,7 @@ export default function HomePage() {
 				variants={fadeInUpVariants}
 			>
 				<div className="max-w-6xl w-full mx-auto flex flex-col gap-10">
-					<motion.div
-						className="flex flex-col items-center text-center space-y-4 max-w-2xl mx-auto"
-						variants={fadeInUpVariants}
-					>
+					<BlurFade delay={0.04} className="flex flex-col items-center text-center space-y-4 max-w-2xl mx-auto">
 						<h2 className="text-3xl md:text-4xl text-white font-medium tracking-tight">
 							How{" "}
 							<span className="font-display tracking-tight text-white">
@@ -630,10 +723,10 @@ export default function HomePage() {
 								Datacenter challenges
 							</span>
 						</h2>
-					</motion.div>
+					</BlurFade>
 
 					<motion.div
-						className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 auto-rows-[220px]"
+						className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 auto-rows-auto md:auto-rows-[220px]"
 						variants={fadeInUpVariants}
 					>
 						{/* 1. Performance Analytics */}
@@ -722,7 +815,7 @@ export default function HomePage() {
 								<div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#00FF88]">
 									<Zap className="w-5 h-5" strokeWidth={1.5} />
 								</div>
-								<div className="flex-1 flex flex-col items-center justify-center py-6 opacity-40 pointer-events-none">
+								<div className="hidden flex-1 flex-col items-center justify-center py-6 opacity-40 pointer-events-none lg:flex">
 									<div className="w-8 h-8 rounded-full border border-[#00FF88]/30 flex items-center justify-center bento-animate-pulse-slow">
 										<div className="w-2 h-2 bg-[#00FF88] rounded-full" />
 									</div>
@@ -819,71 +912,7 @@ export default function HomePage() {
 				</div>
 			</motion.section>
 
-			{/* Efficient virtualization section */}
-			<motion.section
-				className="relative z-10 px-4 py-16"
-				ref={featureRef}
-				initial="hidden"
-				animate={featureInView ? "visible" : "hidden"}
-				variants={fadeInUpVariants}
-			>
-				<div className="max-w-6xl mx-auto">
-					<div className="grid md:grid-cols-2 gap-8 items-center">
-						<motion.div
-							className="bg-black/40 backdrop-blur-sm rounded-2xl overflow-hidden"
-							variants={fadeInUpVariants}
-						>
-							<Image
-								src="https://cdn.pixabay.com/photo/2016/03/29/16/49/electricity-1288717_1280.jpg"
-								alt="ARM Processor"
-								width={600}
-								height={400}
-								className="w-full h-auto"
-							/>
-						</motion.div>
-						<motion.div
-							className="space-y-4"
-							variants={fadeInUpVariants}
-						>
-							<motion.div
-								className="text-[#00FF88]"
-								variants={fadeInUpVariants}
-							>
-								Efficient Virtualization
-							</motion.div>
-							<motion.h2
-								className="text-3xl font-bold text-white"
-								variants={fadeInUpVariants}
-							>
-								Optimized for ARM and RISC-V Architecture
-							</motion.h2>
-							<motion.h3
-								className="text-xl text-white/80"
-								variants={fadeInUpVariants}
-							>
-								Leveraging Advanced Processor Features
-							</motion.h3>
-							<motion.p
-								className="text-white/60"
-								variants={fadeInUpVariants}
-							>
-								<span
-									className="font-display tracking-tight"
-								>
-									<span className="font-galano">Altwy</span>
-								</span>{" "}
-								utilizes ARM and RISC-V specific features to
-								provide near-native performance for guest
-								operating systems while significantly reducing
-								heat generation and energy consumption.
-							</motion.p>
-							<motion.div
-								variants={fadeInUpVariants}
-							></motion.div>
-						</motion.div>
-					</div>
-				</div>
-			</motion.section>
+			<SiliconSection />
 
 			{/* Footer / Linkedin section */}
 			<motion.section
@@ -914,26 +943,28 @@ export default function HomePage() {
 
 				<div className="relative z-10 mx-auto max-w-7xl px-2 md:px-8">
 					<div className="mb-24 flex flex-col items-center text-center md:mb-28">
-						<div className="relative mb-10">
-							<div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-[#0A0A0A] shadow-2xl">
-								<Linkedin className="h-8 w-8 text-white" />
-							</div>
-						</div>
-
-						<h2 className="mb-6 max-w-3xl text-4xl font-light tracking-tighter text-white md:text-6xl">
-							See tomorrow, today.
+						<h2 className="mb-10 max-w-3xl font-display text-4xl font-medium tracking-tight text-white md:text-6xl">
+							Ready to transform your Infrastructure Economics ?
 						</h2>
-						<p className="mb-10 max-w-2xl text-lg font-light leading-relaxed text-white/60">
-							Follow us on LinkedIn to stay updated with the
-							latest Altwy news, features, and innovations.
-						</p>
 
-						<div className="flex flex-col items-center gap-4 sm:flex-row">
+						<div className="flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+							<Link
+								href="/download"
+								className="inline-flex h-[38px] min-w-[132px] items-center justify-center gap-1.5 border border-[#00FF88] bg-[#00FF88] px-3.5 text-sm font-medium text-black transition-colors duration-300 hover:border-[#33FFA0] hover:bg-[#33FFA0]"
+							>
+								<span>Discover Altwy Access</span>
+							</Link>
+							<Link
+								href="/company/altwy"
+								className="inline-flex h-[38px] min-w-[132px] items-center justify-center gap-1.5 border border-neutral-200 bg-white px-3.5 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88]"
+							>
+								<span>Read About Our Story &amp; Team</span>
+							</Link>
 							<Link
 								href="https://linkedin.com/company/altwy"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group relative flex items-center gap-2 rounded-full bg-[#F2F0EB] px-8 py-4 text-sm font-medium text-stone-950 transition-all hover:scale-105 hover:bg-white"
+								className="inline-flex h-[38px] min-w-[132px] items-center justify-center gap-1.5 border border-neutral-200 bg-white px-3.5 text-sm font-medium text-neutral-900 transition-colors duration-300 hover:border-[#00FF88]"
 								onClick={() => {
 									if (window.gtag) {
 										window.gtag(
@@ -948,15 +979,8 @@ export default function HomePage() {
 									}
 								}}
 							>
-								<span>Follow on LinkedIn</span>
-								<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-							</Link>
-							<Link
-								href="/news"
-								className="group flex items-center gap-2 rounded-full border border-stone-800 bg-stone-900/30 px-8 py-4 text-sm font-medium text-stone-300 backdrop-blur-sm transition-colors hover:border-stone-700 hover:bg-stone-800 hover:text-white"
-							>
-								<FileText className="h-4 w-4" />
-								<span>Latest News</span>
+								<span>LinkedIn</span>
+								<ArrowUpRight className="h-4 w-4" />
 							</Link>
 						</div>
 					</div>

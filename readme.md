@@ -30,6 +30,17 @@ Ensure you have the following installed on your local machine:
 
 4. Open your browser and navigate to `http://localhost:3000` to see the website.
 
+### Admin (News dashboard)
+
+1. Set `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, and `ADMIN_SESSION_SECRET` in `.env.local` (see `.env.example`).
+2. Generate a password hash:
+	```bash
+	node scripts/hash-admin-password.mjs "your-secure-password"
+	```
+	Copy the printed `ADMIN_PASSWORD_HASH=...` line into `.env.local` (base64 form — avoids dotenv breaking `$` in bcrypt hashes).
+3. Open `http://localhost:3000/admin`, sign in, then manage news at `/admin/news`.
+4. Ensure the Node process can write to `data/` and `public/news/` (uploads + JSON).
+
 ## Deployment
 
 ### Prerequisites

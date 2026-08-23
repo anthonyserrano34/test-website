@@ -1,765 +1,298 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { useEffect, useMemo, useState } from "react"
 import { useInView } from "react-intersection-observer"
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import Image from "next/image"
-import Navbar from "@/components/Navbar"
+import { ArrowUpRight, Linkedin } from "lucide-react"
+import TopNavbar from "@/components/TopNavbar"
 import { SubpageHeroHeader } from "@/components/ui/subpage-hero-header"
+import { NewsMedia } from "@/components/news/NewsArticlePreview"
+import { NewsAuthorBadge, NewsDateLabel } from "@/components/news/news-meta"
+import { formatNewsDate, NEWS_PAGE_SIZE, type NewsListItem } from "@/lib/news"
 
-type NewsContentType = "text" | "video"
-
-type NewsItem = {
-	id: number
-	date: string
-	title: string
-	contentType: NewsContentType
-	content: string
-	/** URL absolue ou chemin `/...` dans `public` */
-	image?: string
-	imageAlt?: string
+function monthKey(isoDate: string) {
+	return isoDate.slice(0, 7)
 }
 
-// Pour le balisage: **gras** __grand__ *italique*
-// TODO : think about another way to handle news to make it easier for Christophe to add news (maybe pull them from a JSON file ?)
-const newsItems: NewsItem[] = [
-	{
-		id: 22,
-		date: "May 2026",
-		title: "[TEST] Petit test avec une image",
-		contentType: "text",
-		image: "/dashboard.png",
-		imageAlt: "Tableau de bord Altwy",
-		content: `Je pose ça là pour voir ce que ça donne avec une image.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-	},
-	{
-		id: 21,
-		date: "Jun 2025",
-		title: "Et si on reprenait vraiment le contrôle de notre infrastructure numérique ?",
-		contentType: "text",
-		content: `Vous pensez que vos données sont en sécurité parce qu'elles sont stockées en Europe ?
-Mauvaise nouvelle : le droit américain s'applique quand même.
-
-FISA et le CLOUD Act permettent à la NSA ou au DOJ d'accéder à vos données, même :
- • si elles sont hébergées à Paris ou Francfort,
- • et même si vous êtes 100 % RGPD compliant.
-
-C'est le cas d'AWS, Azure, Google Cloud… mais aussi de tout cloud privé fonctionnant sur des technos ou matériels américains (VMware, Microsoft, Dell…).
-
-Chez Altwy, on fait un autre choix :
-✅ Infrastructure 100 % européenne,
-✅ Virtualisation sobre et souveraine sur ARM,
-✅ Contrôle total par les acteurs européens, sans backdoor légale.
-
-Il est temps d'arrêter de confondre "local" et "souverain".
-
-Et si on reprenait vraiment le contrôle de notre infrastructure numérique ?
-
-Voir plus: https://www.linkedin.com/pulse/peut-on-encore-parler-de-souverainet%C3%A9-num%C3%A9rique-quand-lambert-lktbf/?trackingId=xibr%2FkO0St6PL9NOorcd3Q%3D%3D
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 20,
-		date: "May 2025",
-		title: "🔒 Europe, we've been warned.",
-		contentType: "text",
-		content: `**The future of Europe's digital autonomy won't wait. Let's build it now.**
-
-Microsoft just cut off the **International Criminal Court's emails** – unilaterally.
-
-Sources: https://www.computerweekly.com/opinion/Microsofts-ICC-email-block-reignites-European-data-sovereignty-concerns
-
-This isn't about convenience anymore. It's about **sovereignty**.
-When a US-based hyperscaler can suspend communications from **The Hague**, it's a wake-up call for every European institution, company, and policymaker.
-
-The cloud we rely on today is **not neutral**. And it was never designed to be.
-
-⚠️ The risks go far beyond privacy. What's at stake is our **capacity to operate freely** in a digitized, geopolitically tense world.
-
-At Altwy, we are building a **next-generation infrastructure platform** —
-• **sovereign by design**,
-• **energy-efficient by architecture**,
-• **and resilient by default**.
-
-Our stack allows Enterprises, **Telcos and Service Providers** to operate a fully governed, AI-ready infrastructure, with built-in compatibility for **Intel, ARM, and RISC-V**.
-We're also releasing devkits for **OpenAI and Mistral AI**, with **GDPR-native search capabilities**.
-
-We're now raising money to scale.
-
-Early investors include a major German fund and a French impact VC.
-We are actively looking for a **lead investor** aligned with our mission.
-
-If you're a VC with a strong **impact or sovereignty thesis**, let's talk.
-Or if you're in my network and believe in what we're building — a **WARM introduction** would mean the world.
-
-**The future of Europe's digital autonomy won't wait. Let's build it now.**
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 19,
-		date: "May 2025",
-		title: "🚨 Because the cost of waiting… is power wasted.",
-		contentType: "text",
-		content: `Amazon may soon rely on **nuclear power plants** to meet the energy needs of its cloud datacenters.
-Sources: https://www.theregister.com/2025/05/16/amazon_nuclear_power_britain/
-
-That's not just a headline.
-
-It's a clear signal:
-➡️ Electricity is becoming the #1 constraint for Datacenter.
-➡️ Energy efficiency is now a strategic battleground.
-
-At Altwy, we believe the solution doesn't start with nuclear.
-We believe in a different approach — one that starts with efficiency.
-
-We're building a sovereign, low-consumption alternative for Datacenter, designed to:
-➡️ Slash power consumption at the virtualization layer
-➡️ Make datacenters ARM- and RISC-V–ready
-➡️ Free space in the Datacenter
-➡️ Empower Telcos, Service Providers and Enterprise to scale without adding energy strain
-
-Our future platform will includes:
-✅ One-click deployment of OpenAI & Mistral AI toolkits
-✅ A GDPR search module powered by sovereign AI
-✅ Open-source APIs to accelerate third-party integrations
-
-Energy will be the limiting factor of the digital world. The infrastructure layer must evolve — before every cloud turns nuclear.
-It's time to cut energy waste, not build more reactors.
-It's time to invest in intelligent orchestration.
-We're now raising capital to scale.
-If you're an impact VC or know someone investing in deeptech and infrastructure efficiency, 📩 I'd love to connect.
-
-Because the cost of waiting… is power wasted.
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 18,
-		date: "Apr 2025",
-		title: "U.S. Tariffs Are Reshaping the Cloud Market – A Unique Opportunity for Investors!",
-		contentType: "text",
-		content: `U.S. Tariffs Are Reshaping the Cloud Market – A Unique Opportunity for Investors!
-
-The recent tariffs imposed by President Trump on European tech products are shaking up the cloud and datacenter industry. Enterprises are now forced to rethink their infrastructure strategy—and the shift away from traditional U.S.-centric solutions has already begun.
-
-At Altwy, we provide the only sovereign European cloud management platform that enables enterprises to migrate from Intel-based VMware environments to ARM-powered infrastructures—dramatically reducing both costs and energy consumption.
-
-**Why does this matter for investors?**
-✅ Massive market demand: Enterprises and cloud providers need cost-effective, tariff-resistant alternatives.
-✅ Strategic positioning: Europe needs sovereignty in cloud infrastructure—Altwy is leading the way.
-✅ Proven impact: Altwy delivers unmatched efficiency gains.
-
-With the U.S. cloud landscape shifting, investing in Altwy means betting on the future of a resilient, sovereign, and high-performance cloud ecosystem.
-
-VCs, let's talk! The window of opportunity is now. 🚀
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 17,
-		date: "Feb 2025",
-		title: "Introducing the Distributed OS for Data Centers – Redefining Cloud Efficiency The Future of Cloud Computing is Here",
-		contentType: "text",
-		content: `Data centers are the backbone of our digital world, powering everything from streaming services to financial transactions. However, as demand grows, so do the challenges: skyrocketing energy costs, fragmented infrastructure, and the need for seamless scalability.
-
-What if we told you there’s a solution that not only unifies your infrastructure but also slashes energy consumption by up to 75%? Meet the Distributed OS for Data Centers, a revolutionary operating system designed to transform how we manage and scale cloud environments.
-
-What is the Distributed OS for Data Centers?
-
-The Distributed OS for Data Centers is more than just a hypervisor—it’s a comprehensive operating system that treats your entire data center as a single, unified entity. Whether you’re running virtual machines, containers, or web services, this OS abstracts away complexity, enabling seamless management across multiple platforms and architectures. It’s built to optimize resource utilization, enhance scalability, and deliver unparalleled energy efficiency.
-
-**Key Features** of the Distributed OS
-
-**1. Unified Resource Pooling**
-
-The Distributed OS consolidates compute, storage, and networking resources across all physical and virtual machines into a single logical pool. This abstraction allows you to allocate resources dynamically based on workload demands.
-
-**2. Multi-Platform Support**
-
-Designed for heterogeneous environments, it supports x86, ARM, and emerging architectures.
-
-**3. Energy Efficiency at Scale**
-
-By intelligently managing workloads and reducing idle power consumption, the Distributed OS can cut data center energy usage by up to 75%, making it a game-changer for sustainability.
-
-**4. Self-Healing Infrastructure**
-
-Built-in fault tolerance ensures high availability by automatically detecting failures and reallocating resources without disrupting operations.
-
-**5. Accelerated App Deployment**
-
-Being able to deploy 3rd party applications for the Data Center from the ALTWY integrated Market Place
-
-**6. Enhanced Security & Isolation**
-
-Logical isolation between workloads ensures robust security in multi-tenant environments while maintaining high performance.
-
-**__Why Call It a “Distributed OS”?__**
-Traditional operating systems manage individual machines; the Distributed OS manages entire data centers as if they were one machine. This paradigm shift allows organizations to:
-
-• Scale Effortlessly: Deploy workloads across geographically distributed data centers  while maintaining low latency and high performance.
-
-• Simplify Operations: Manage complex infrastructures through a single interface with unified monitoring and orchestration tools.
-
-• Optimize Costs: Reduce hardware sprawl and energy consumption while improving resource utilization.
-
-**How It’s Changing the Game**
-
-The Distributed OS for Data Centers is designed to address some of the most pressing challenges in cloud computing:
-
-1. Sustainability: By reducing energy consumption significantly, it helps organizations meet their sustainability goals while lowering operational costs.
-
-2. Resilience: Its distributed architecture ensures continuous availability even in the face of hardware failures or regional outages.
-
-3. Flexibility: Whether you’re running legacy applications or modern Microservices, this OS adapts to your needs without requiring costly rearchitecting.
-
-**Real-World Impact**
-
-Imagine running thousands of virtual machines and containers across multiple locations without worrying about resource bottlenecks or downtime. Picture cutting your energy bills by three-fourths while delivering faster services to your customers - this is what ALTWY distributed OS will do.
-
-**Conclusion: The Operating System of Tomorrow**
-
-The Distributed OS for Data Centers is more than just software—it’s a movement toward smarter, greener cloud computing. By unifying platforms, optimizing resources, and enabling seamless scalability, it’s poised to become the foundation of next-generation data centers.
-
-Are you ready to join the revolution? Let’s build a sustainable future for cloud computing together!
-
-**Peter Mahlmeister**
-**CSO Altwy**`,
-	},
-	{
-		id: 16,
-		date: "Feb 2025",
-		title: "🎉 Altwy turns 2 today! 🎉",
-		contentType: "text",
-		content: `Two exciting years of building a sovereign #cloud management solution—one that brings more efficiency, more flexibility, and most importantly, lower #energy consumption.
-
-💡 The market is shifting in our favor
-✅ The #AI boom is driving an urgent need for datacenter #optimization.
-✅ Broadcom’s acquisition of VMware is reshaping the industry.
-✅ More and more companies are moving away from public clouds to regain control with private infrastructures.
-✅ #Sovereignty and energy efficiency are becoming top strategic priorities.
-
-🔥 That’s why we’re launching version 2 of our MVP 🔥
-
-Packed with new features to help businesses navigate this cloud transformation.
-The trends are clear: intelligent, sovereign multi-cloud management is the future. Enterprises need it, and investors have a unique opportunity to back a game-changing player in this revolution.
-
-A huge thank you to everyone supporting us on this journey. The best is yet to come! 🚀
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 15,
-		date: "Feb 2025",
-		title: "Waste Heat: A Symptom of Energy Overconsumption, Not a Solution",
-		contentType: "text",
-		content: `The demand for #cloud #infrastructure continues to grow, creating numerous opportunities for new data centers. However, poor technological choices can turn these opportunities into energy-draining liabilities. Even today, too many data centers dissipate a significant portion of their energy as waste heat, which is then inefficiently repurposed to heat swimming pools or water tanks.
-
-But waste heat recovery is a false solution:
- - Waste heat is difficult to repurpose: It is often too diffuse, not hot enough, and requires costly infrastructure to transport and utilize.
- - Heat demand doesn’t align with production: A data center operates 24/7, while heating needs are seasonal and intermittent.
- - Losses are inevitable: Between capture, transport, and conversion, a large portion of this heat is simply lost.
-
-The best energy is the one directly used for computing rather than being wasted as heat. To achieve this, data centers can be designed from the start with the right technologies:
- - #ARM processors and future #RISC-V architectures: More energy-efficient, they reduce waste and optimize performance per watt.
- - Passive cooling and optimized ventilation: Minimizing the need for energy-intensive air conditioning.
- - Intelligent orchestration of computing loads: Advanced workload management software like #Altwy optimizes resource usage based on demand and energy consumption.
-
-With the rise of artificial intelligence, optimizing data centers is even more critical. AI workloads are extremely energy-intensive and require efficient management to prevent excessive consumption. A platform like Altwy dynamically adjusts resources based on the real needs of training and inference algorithms, reducing energy waste while ensuring optimal performance.
-
-The good news: This approach isn’t limited to new data centers. Existing infrastructure can transition from energy-wasting radiators to more sustainable models through hardware and software upgrades. By moving from Intel and VMware to Intel and Altwy, then to Altwy and Arm, efficiency is maximized while ensuring a smooth transition to a more intelligent and sustainable computing environment.
-The future of data centers should not be oversized radiators but ultra-efficient platforms dedicated to computing and innovation.
-
-#Investors, #venture capitalists, and financial institutions have a unique opportunity to drive this transformation by supporting pioneering solutions like Altwy, shaping the next generation of sustainable and high-performance data centers.
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 14,
-		date: "Jan 2025",
-		title: "2025: What Lies Ahead in the World of IT and Cloud",
-		contentType: "text",
-		content: `The year 2025 promises to be a **pivotal one for the IT sector**, marked by major transformations in cloud technologies, infrastructure, and energy management. At **Altwy**, we observe trends that will significantly reshape priorities for businesses and IT leaders. Here are my predictions for this critical year.
-
-**1. The rise of generative AI in enterprises** In 2025, generative AI will move from experimentation to widespread adoption. These tools will revolutionize internal processes and customer experiences, while posing significant challenges in terms of energy consumption and ethics. Companies must innovate to integrate these technologies responsibly.
-
-**2. Electricity: A scarce and valuable resource** As datacenter energy consumption continues to rise, electricity will become a critical resource. This scarcity will push businesses to adopt technologies that significantly reduce their energy footprint. Solutions like those developed by Altwy will play a key role in optimizing cloud resources and ensuring a sustainable future.
-
-**3. The shift toward private clouds and multi-cloud strategies** CIOs are increasingly questioning their reliance on public clouds. Concerns over security, costs, and data sovereignty are driving businesses to repatriate workloads to private clouds. This shift will lead to more complex multi-cloud environments, requiring tools that can unify and optimize diverse infrastructures.
-
-**4. A dynamic market for hypervisors and cloud platforms** The acquisition of VMware by Broadcom is creating instability in the hypervisor market, leading to customer attrition and opportunities for emerging players. In 2025, businesses will seek reliable alternatives, further energizing the sector’s dynamism. This volatility will also heighten the demand for solutions that can swiftly adapt to evolving market conditions.
-
-**5. Sustainability as a strategic priority** Regulatory and societal pressures will push businesses to prioritize energy efficiency. Datacenters that adopt sustainable, innovative solutions will set the standard for the industry. Investors will increasingly favor projects emphasizing eco-friendly technologies.
-
-**6. The adoption of Arm and RISC-V processors in datacenters** ARM and RISC-V architectures, known for their energy efficiency and flexibility, will see accelerated adoption in 2025. Players like Ampere Computing, leveraging ARM-based solutions, will be key drivers of this transition. A strategic collaboration between ARM and Ampere Computing could further accelerate the adoption of these technologies, especially for cloud-intensive workloads. Simultaneously, RISC-V, with its open-source model, is gaining traction among datacenters looking to reduce dependence on proprietary architectures.
-
-2025 is set to be a year of great challenges and strategic opportunities for the IT world. From energy scarcity and evolving CIO priorities to the rise of ARM and RISC-V architectures and the shifting dynamics of the hypervisor market, businesses must innovate to stay competitive. At Altwy, we’re ready to support this transformation with solutions that reduce energy consumption and optimize cloud environments, helping redefine the technological paradigm.
-
-**Christophe Lambert** 
-**CEO - Altwy**`,
-	},
-	{
-		id: 13,
-		date: "Dec 2024",
-		title: "Altwy secures funding from Bpifrance under the #France2030 program to accelerate the development of Altwy, the platform for next-generation data centers and AI infrastructure.",
-		contentType: "text",
-		content: `Altwy is proud to announce that it has received funding from **BPI France** as part of the **France 2030** program. This support will drive the advancement of Altwy, an innovative platform designed to revolutionize data center management and AI infrastructures.
-		
-Altwy offers cutting-edge solutions for optimizing infrastructure, **reducing energy consumption**, and enabling the seamless deployment of **artificial intelligence workloads**. Positioned as the cornerstone for **tomorrow’s AI infrastructures**, Altwy aligns with the France 2030 vision of fostering sustainable, high-performance technologies.
-
-*“This funding represents a major milestone in our mission to create smarter, greener IT solutions that address the challenges of today and tomorrow”* said **Christophe Lambert, CEO**.`,
-	},
-	{
-		id: 12,
-		date: "Dec 2024",
-		title: "Altwy appoints Peter Mahlmeister as Chief Strategy Officer",
-		contentType: "text",
-		content: `Altwy is pleased to announce the **appointment of Peter Mahlmeister** as **Chief Strategy Officer (CSO)**. With over 30 years of experience in the IT industry, Peter will play a critical role in shaping Altwy’s strategic direction and driving its next phase of growth.
-
-Peter’s career spans a range of leadership roles at major technology companies, including Silicon Graphics/SGI, HPE, and NetApp, as well as innovative startups such as Tintri, SimpliVity, and Cohesity. His extensive knowledge of the IT ecosystem and his forward-thinking perspective will bring invaluable insights to Altwy.
-
-**Christophe Lambert**, CEO of Altwy, expressed his enthusiasm for Peter’s arrival:
-"I am delighted to welcome Peter to Altwy. Having had the privilege of working with him for over 20 years, I know firsthand the value of his strategic mindset and collaborative approach. Peter’s expertise will be a tremendous asset as we continue to scale and achieve our ambitious goals.”
-Peter Mahlmeister’s appointment underscores Altwy’s commitment to building a strong leadership team equipped to navigate the complexities of the evolving IT landscape.`,
-	},
-	{
-		id: 1,
-		date: "Nov 2024",
-		title: "Altwy at Slush 2024",
-		contentType: "text",
-		content: `This week will start **Slush2024** in *Helsinki*, a 2 days of VC/Startups meetings but a full week of networking !
-Our CEO will be there from *Nov 17th to 24th*.
-If you are a VC and want to **invest** in one of the most promising startup, feel free to meet him at Slush or during the week !`,
-	},
-	{
-		id: 2,
-		date: "Nov 2024",
-		title: "Altwy unveiled its new website : www.altwy.com",
-		contentType: "text",
-		content: `Altwy launches its **__new website__**. Much more **professional and dynamic**, it reflects the company's identity in its fight for more **efficient** and **lower-consumption datacenters**.
-"We are very proud and very happy about this new website. A new step in our corporate communication." - *Christophe Lambert - CEO Altwy*`,
-	},
-	{
-		id: 3,
-		date: "Oct 2024",
-		title: "Will new Data Centers be seen as a problem going forward or will mankind understand how to make existing ones more efficient ?",
-		contentType: "text",
-		content: `**__The Rise of Data Centers: A Necessity Amid Controversy__**
-Data centers, the essential backbone of our digital world and the booming artificial intelligence (AI) industry, are proliferating rapidly. However, their exponential growth is raising significant concerns regarding their energy consumption, environmental impact, and the strain they place on local communities.
-
-**__Why It Matters__**
-In the United States, there are more than **5,000 data centers**, which consume massive amounts of energy and occupy vast areas of land. In Europe, while fewer in number, data centers are also multiplying rapidly, particularly in France, Germany, the Netherlands, and the Nordic countries. These installations are critical for running the internet, AI, and cloud services, and are often backed by generous tax and energy incentives. However, their energy footprint is becoming a major source of contention.
-
-**__The U.S. Case__**
-The **United States**, as the global epicenter of data centers, continues to see rapid expansion of these facilities. According to **CBRE** (a leading real estate services company), investments in data centers exceeded **$35 billion** in 2022, with growth projected to continue at a double-digit rate. **Northern Virginia** remains the world's largest data center hub, hosting over 160 operational centers.
-
-A key issue in the U.S. is energy demand. According to a **2023 Grid Strategies report**, U.S. data centers will require nearly **40 additional gigawatts** of electricity by 2028, nearly double previous estimates. This alarming figure reflects the growing pressure on the U.S. power grid, particularly in states like **Texas**, where electricity consumption is rising rapidly. In **Northern Virginia**, data centers now account for **20%** of the state's electricity consumption, a percentage that continues to grow.
-
-**__Controversial Projects__**
-Virginia serves as a prime example. In 2022, a massive data center project in **Prince William County** sparked fierce opposition from residents. A **27-hour** marathon meeting was required to approve the project, which is now being contested in court by locals who argue it will lower property values and create significant noise pollution. In Columbus, Ohio, **Microsoft** secured a full tax exemption on a **$420 million** data center investment, but the long-term economic impact for the community is minimal, with only **30 jobs** created.
-
-**__The European Case__**
-In Europe, data centers are also expanding rapidly but face a different set of pressures due to stringent climate goals. **The European Union** has set ambitious targets for reducing carbon emissions through the **Green Deal**, which imposes stricter standards on data centers in terms of energy consumption and the use of renewable energy.
-
-**__Key European Statistics__**
-In 2022, Europe had around **4,500 data centers**, concentrated in countries like Germany, France, the Netherlands, and the Nordic countries. **Germany** hosts around **10%** of Europe's data centers, while the **Netherlands** accounts for **8%**. **The Nordic countries** (Sweden, Norway, Finland) are increasingly prominent due to their ability to leverage renewable energy sources to power data centers.
-
-• In 2023, a study by the Shift Project estimated that European data centers consume approximately 90 TWh of electricity annually, accounting for nearly 3% of the EU’s total electricity consumption.
-
-In **France**, the electricity consumption of data centers in 2020 was around **10 TWh** per year, representing about **2%** of the country's total electricity use. This figure could triple by 2030, according to **Ademe**.
-
-**__European Initiatives to Reduce Energy Impact__**
-Countries like **Sweden** and **Norway** have taken a proactive approach by using green energy to attract data centers. For example, data centers in **Norway** run largely on **hydropower**, which supplies around **98%** of the country’s electricity. This allows tech giants like **Microsoft** and **Google** to establish operations there while adhering to strict sustainability requirements.
-
-In **Sweden, Stockholm Data Parks** has developed an innovative project where residual heat from data centers is used to heat residential buildings, creating a circular economy model that reduces overall energy consumption. Data centers in these parks feed energy back into the district heating network, allowing the city to reduce its carbon footprint while providing essential digital services.
-
-**__Local Impact and Opposition__**
-Like in the U.S., European data centers face growing opposition due to their impact on the power grid and local communities.
-
-**__France: Growing Tensions__**
-In France, regions like Île-de-France and Bouches-du-Rhône, where many data centers are concentrated, are facing increasing pressure on land availability and power grids. For example, the **Aix-Marseille** metro area, which has become a significant digital hub thanks to its undersea cable connections, is attracting more data centers, but this presents challenges for urban planning and energy management.
-
-The **RE2020** law in France now mandates that data centers limit their carbon footprint. These facilities must use at least **30% renewable energy** and meet stricter energy efficiency (PUE) requirements to comply with the country’s goal of carbon neutrality by **2050**. However, these requirements raise costs and spark debates about balancing economic performance with sustainability.
-
-**__Germany: Frankfurt Under Pressure__**
-**Frankfurt**, Europe’s data center capital, is home to over **60 facilities** and consumes more than **20%** of the region’s electricity. The city is facing significant criticism, particularly regarding the impact of these centers on land prices and their heavy use of water for cooling. In 2023, residents launched several petitions to stop the construction of new centers in residential areas, calling for more sustainable solutions and better distribution of infrastructure across the country.
-
-**__Tax Incentives and Controversies__**
-In both the U.S. and Europe, data centers continue to receive substantial support through tax incentives. In the U.S., **30 states** have passed legislation offering property tax abatements and other financial incentives to companies building data centers, often in the form of sales tax credits or equipment tax breaks.
-
-In **Europe**, countries like **Ireland** are known for their highly favorable tax policies. Irish data centers, which account for about **25%** of the country’s electricity consumption, benefit from attractive fiscal incentives despite growing concerns about national energy resources.
-
-**__Conclusion__** 
-If we want to avoid these ongoing data center crises, we need to think differently and consider whether it's time to **make existing data centers more efficient** by rethinking their renewal now. 
-
-They're filled with servers powered by processors that were efficient 20 or 25 years ago. Today, much more efficient servers exist, and **Altwy** not only enables the full utilization of these new resources while allowing for a smooth transition from the current infrastructure to the future of the Cloud, but also supports you and your company to **reach your #ESG goals!**
-
-*Christophe Lambert - CEO Altwy*
-
-
-
-Learn more about **Altwy** : 
-
-• The challenge of data center efficiency: https://youtu.be/XumN1bnpCGE 
-• The future of hypervisors: https://youtu.be/u0YKClDnWOc
-• And one in French : https://youtu.be/dtseWsMaTH4`,
-	},
-	{
-		id: 4,
-		date: "Oct 2024",
-		title: "It's time to change !",
-		contentType: "text",
-		content: `Data centers, the backbone of the digital economy, have become massive energy consumers. According to a study by the **Electric Power Research Institute (EPRI)**, data centers could account for up to *9% of U.S. electricity consumption by 2030*. To address this growing demand, companies have turned to solutions like water cooling. For instance, Cloud Giants draws millions of liters of water from aquifers and rivers to cool their infrastructure. However, this method is far from environmentally friendly, depleting water resources and threatening local ecosystems.
-
-Simultaneously, power grids are becoming overloaded. Electrical lines are struggling to keep up with demand, especially with the surge in AI-related projects. A **"The Wall Street Journal"** article from September 28, 2024, reports that **U.S. data centers now consume three times the electricity capacity of New York City.** Electric utilities are faced with difficult decisions: modernize infrastructure to meet demand at an enormous cost. In some regions, like Salt Lake City, data center projects have been temporarily halted due to a lack of transmission capacity.
-
-The use of data centers as heat sources to warm water tanks in some countries is another example of inefficient resource management. While this solution may seem innovative, it is, in fact, ineffective and counterproductive. It is absurd to use such complex and energy-intensive infrastructures for such trivial purposes. *A datacenter is not a radiator.*
-
-Some companies are exploring extreme solutions, such as placing data centers underwater or in the Arctic Circle to take advantage of natural cooling. However, these initiatives only shift the problem elsewhere. They introduce new logistical challenges while continuing to pollute and disrupt the environment. The underwater networks, grids and infrastructure required for these operations only exacerbate the environmental footprint of such projects.
-
-In this context, venture capital (VC) firms continue to invest heavily in AI-related startups, even though delays in infrastructure deployment due to energy issues can extend over several years. These delays often compromise the short-term profitability of such investments, as startups struggle to deploy their projects quickly enough to repay VCs.
-
-So why continue to invest in these energy-hungry startups, rather than focusing on those that offer solutions to reduce the environmental impact of data centers? As I often say: **" It's always time to tackle the causes rather than the consequences ! "**. One of the major causes is the excessive power consumption of processors used in data centers, like Intel chips, which consume a lot of energy and produce significant heat.
-
-A shift in paradigm is necessary. In this regard, **Apple** has set an example by replacing all Intel processors in its machines with modern processors that incorporate AI functionalities. These faster, more efficient systems have significantly reduced power consumption, and most importantly, they do not overheat. They no longer require fans, relying instead on simple passive radiators for cooling.
-
-This transition perfectly illustrates the direction that also data centers should follow. An innovative solution is offered by the startup Altwy, which has developed a cloud management software tailored for data centers. This software optimizes resource management by leveraging modern, energy-efficient, and “cool“-running processors. Investing in Altwy means giving data centers the ability to reduce both their energy and environmental costs, while providing a platform that is simple to manage and administer.
-
-In conclusion, rather than continuing to seek expensive and ineffective solutions to address the symptoms of the data center energy crisis, it is essential to address the root cause. Investing in more efficient and environmentally friendly technologies, like those proposed by **Altwy**, would provide a truly sustainable long-term solution.
-
-
-
-*Christophe Lambert*
-
-*CEO Altwy*
-
-
-
-**Sources : The Wall Street Journal EPRI Apple Arm RISC-V International **
-
-#GreenIT #VC`,
-	},
-	{
-		id: 5,
-		date: "Aug 2024",
-		title: "France2030 invested into Altwy - August 2024",
-		contentType: "text",
-		content: `I'm very proud to announce that a part of our **R&D** at **__Altwy__** was possible because of subvention from **Bpifrance (the French Banque of Investment, property of the République française).**
-To create multiple tools to make our Planet **greener** and our Datacenter **more efficient**, finances are key. **Bpifrance** and the **République française** invested into **our vision** to make a part of our technology available ! 
-Today a major step is achieved and we are building the next chapter !
-Here 2 videos in English about Altwy :
-• https://lnkd.in/dS7TfkgP 
-• https://lnkd.in/dFYvABYd
-Feel free to subscribe to our page : https://lnkd.in/d6Pr3PSn`,
-	},
-	{
-		id: 6,
-		date: "July 2024",
-		title: "First video of Altwy in French !",
-		contentType: "video",
-		content: "https://www.youtube.com/embed/dtseWsMaTH4",
-	},
-	{
-		id: 7,
-		date: "March 2024",
-		title: "Altwy : The Challenge of Data Center Efficiency",
-		contentType: "video",
-		content: "https://www.youtube.com/embed/XumN1bnpCGE",
-	},
-	{
-		id: 8,
-		date: "Feb 2024",
-		title: "The Heat: How ARM Processors and Altwy Hypervisor Can Cool Down Your Datacenter",
-		contentType: "text",
-		content: `**__Introduction:__**
-Welcome, data center enthusiasts! Today, we're going to tackle a hot topic - literally. Yes, we're talking about the fatal heat that can plague your data center and turn it into a sauna. But fear not, because there is a cool solution on the horizon. By harnessing the power of ARM or RISC-V processors and utilizing the innovative Altwy hypervisor, you can finally say goodbye to the heat and hello to optimal performance. So, sit back, relax, and let's dive into how you can transform your data center into a cool oasis of efficiency.
-
-**__1: The Heat is On__**
-Ah, the dreaded fatal heat that lurks in every data center. It's like a relentless enemy that constantly threatens to bring your operations to a screeching halt. With traditional Intel processors churning away, the heat can quickly spiral out of control, turning your once-efficient data center into a veritable oven. But fear not, for there is a light at the end of the tunnel.
-
-**__2: ARM to the Rescue__**
-Enter ARM processors, the unsung heroes of the data center world. These power-efficient chips are like a breath of fresh air in a stifling room. By switching to ARM architecture, you can significantly reduce the heat generated in your data center, creating a much cooler and more sustainable environment for your operations. It's like swapping out a roaring fireplace for a gentle breeze - the difference is truly night and day.
-
-**__3: Altwy: The Cool Hypervisor__**
-But wait, there's more! The secret weapon in your quest to beat the heat is none other than Altwy, the innovative hypervisor that is taking the data center world by storm. By leveraging the unique capabilities of Altwy, you can unlock the full potential of your ARM processors and maximize their cooling benefits. It's like having a personal air conditioner for your data center, ensuring that your operations stay cool, calm, and collected at all times.
-
-**__4: Data Center or Sauna?__**
-Let's face it - a data center is not a heater, it's a provider of vital data and applications that drive your business forward. So why settle for a sweltering sauna when you could have a perfectly cool and efficient data center instead? With the right tools and technology at your disposal, you can transform your data center from a heat trap into a well-oiled machine that delivers results day in and day out.
-
-**__5: The Power of Choice__**
-When it comes to processors, you have a choice - do you stick with the status quo and continue to generate excessive heat with traditional Intel chips, or do you embrace the future with ARM processors that offer unparalleled efficiency and cooling benefits? The choice is clear, and the benefits are undeniable. By making the switch to ARM, you can future-proof your data center and ensure that it operates at peak performance without breaking a sweat.
-
-**__6: Efficiency is Key__**
-At the end of the day, it all comes down to efficiency. A data center that is bogged down by heat is like a car running on empty - it's only a matter of time before it grinds to a halt. By optimizing your data center with ARM processors and the Altwy hypervisor, you can ensure that your operations run smoothly and efficiently, with minimal heat and maximum performance. It's a win-win situation that benefits both your bottom line and the environment.
-
-**__7: Beyond the Basics__**
-But the benefits don't stop there. With ARM processors and Altwy at your disposal, you can take your data center to new heights of innovation and productivity. Imagine a world where your operations are faster, more secure, and more cost-effective than ever before. That's the power of ARM and Altwy working in perfect harmony, creating a data center that is truly a force to be reckoned with.
-
-**__8: Embracing the Future__**
-In today's fast-paced digital landscape, the only constant is change. If you want your data center to stay ahead of the curve and remain competitive in the long run, then it's time to embrace the future with ARM processors and Altwy. Don't let fatal heat be the downfall of your operations - take control of your data center's destiny and unlock its full potential with the latest and greatest in processor technology.
-
-**__9: Cool Down, Power Up__**
-So, there you have it - the key to cooling down your data center and powering up your operations lies in the transformative power of ARM processors and the innovative Altwy hypervisor. Say goodbye to fatal heat and hello to a future of efficiency, sustainability, and success. Your data center is not a heater, it's a powerhouse of potential waiting to be unleashed. With ARM and Altwy on your side, the sky's the limit - so why wait? Cool down, power up, and let your data center shine.
-
-**__10: The Bottom Line__**
-In conclusion, fatal heat may be a common problem in data centers, but it doesn't have to be a fatality. By embracing ARM processors and leveraging the capabilities of the Altwy hypervisor, you can dramatically reduce the heat in your data center and unlock a world of performance benefits. Your data center is not a heater - it's a data and application provider that deserves to operate at the highest levels of efficiency. So, take the leap, make the switch, and watch as your data center transforms into a cool oasis of productivity. The future is here, and it's cooler than ever before.`,
-	},
-	{
-		id: 9,
-		date: "Jan 2024",
-		title: "Altwy: The Future of Hypervisors",
-		contentType: "video",
-		content: "https://www.youtube.com/embed/u0YKClDnWOc",
-	},
-	{
-		id: 10,
-		date: "Dec 2023",
-		title: `Mutualisation des ressources numériques responsables - Push Start x AD'OCC`,
-		contentType: "video",
-		content: "https://www.youtube.com/embed/akckj-EGCa8",
-	},
-]
-
-const formatText = (text: string) => {
-	const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|__.*?__)/g);
-	return parts.map((part, index) => {
-		if (part.startsWith('**') && part.endsWith('**')) {
-			return <strong key={index}>{formatText(part.slice(2, -2))}</strong>;
-		} else if (part.startsWith('*') && part.endsWith('*')) {
-			return <em key={index}>{formatText(part.slice(1, -1))}</em>;
-		} else if (part.startsWith('__') && part.endsWith('__')) {
-			return <span key={index} className="text-lg">{formatText(part.slice(2, -2))}</span>;
-		} else {
-			// Detect and transform URLs into clickable links
-			const urlRegex = /(https?:\/\/[^\s]+)/g;
-			const urlParts = part.split(urlRegex);
-			return urlParts.map((urlPart, urlIndex) => {
-				if (urlRegex.test(urlPart)) {
-					return (
-						<a 
-							key={`${index}-${urlIndex}`}
-							href={urlPart}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-[#00FF88] hover:text-[#00FF88]/80 underline transition-colors duration-200"
-						>
-							{urlPart}
-						</a>
-					);
-				}
-				
-				// Highlight Altwy
-				const altwyRegex = /(Altwy)/gi;
-				const textParts = urlPart.split(altwyRegex);
-				return textParts.map((textPart, textIndex) => {
-					if (textPart.toLowerCase() === 'altwy') {
-						return <span key={`${index}-${urlIndex}-${textIndex}`} className="font-galano">{textPart}</span>;
-					}
-					return textPart;
-				});
-			});
-		}
-	});
-};
-
-export default function NewsPage() {
-	const [scrollY, setScrollY] = useState(0)
-	const [expandedItems, setExpandedItems] = useState<number[]>([])
-	const [ref, inView] = useInView({ triggerOnce: true })
+function shortRailMonth(isoDate: string) {
+	const time = Date.parse(`${isoDate}T12:00:00Z`)
+	if (!Number.isFinite(time)) return isoDate
+	return new Intl.DateTimeFormat("en-GB", {
+		month: "short",
+		year: "numeric",
+	}).format(new Date(time))
+}
+
+export default function NewsPage({ items }: { items: NewsListItem[] }) {
+	const [listRef, listInView] = useInView({ triggerOnce: true, threshold: 0.05 })
+	const [visibleCount, setVisibleCount] = useState(
+		Math.min(NEWS_PAGE_SIZE, items.length)
+	)
+	const [activeMonth, setActiveMonth] = useState<string | null>(
+		items[0] ? monthKey(items[0].date) : null
+	)
+	const [pendingScrollId, setPendingScrollId] = useState<number | null>(null)
+
+	const visibleItems = useMemo(
+		() => items.slice(0, visibleCount),
+		[items, visibleCount]
+	)
+	const hasMore = visibleCount < items.length
+
+	const railDates = useMemo(() => {
+		const seen = new Set<string>()
+		const entries: { id: number; date: string; month: string; label: string; index: number }[] =
+			[]
+		items.forEach((item, index) => {
+			const month = monthKey(item.date)
+			if (seen.has(month)) return
+			seen.add(month)
+			entries.push({
+				id: item.id,
+				date: item.date,
+				month,
+				label: shortRailMonth(item.date),
+				index,
+			})
+		})
+		return entries
+	}, [items])
 
 	useEffect(() => {
-		const handleScroll = () => setScrollY(window.scrollY)
-		window.addEventListener("scroll", handleScroll)
-		return () => window.removeEventListener("scroll", handleScroll)
-	}, [])
+		const nodes = visibleItems
+			.map((item) => document.getElementById(`news-${item.id}`))
+			.filter((node): node is HTMLElement => Boolean(node))
 
-	const toggleExpand = (id: number) => {
-		setExpandedItems(prev => {
-			const item = newsItems.find(item => item.id === id);
-			if (item && item.contentType === "video") {
-				return prev.includes(id) ? prev : [...prev, id];
-			}
-			return prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id];
-		});
-	};
+		if (nodes.length === 0) return
 
-	const fadeInUpVariants = {
-		hidden: { opacity: 0, y: 20 },
-		visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const visible = entries
+					.filter((entry) => entry.isIntersecting)
+					.sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+				const top = visible[0]
+				if (!top?.target.id) return
+				const id = Number(top.target.id.replace("news-", ""))
+				const item = items.find((n) => n.id === id)
+				if (item) setActiveMonth(monthKey(item.date))
+			},
+			{ rootMargin: "-20% 0px -55% 0px", threshold: [0.15, 0.35, 0.6] }
+		)
+
+		nodes.forEach((node) => observer.observe(node))
+		return () => observer.disconnect()
+	}, [items, visibleItems])
+
+	useEffect(() => {
+		if (pendingScrollId == null) return
+		const node = document.getElementById(`news-${pendingScrollId}`)
+		if (!node) return
+		node.scrollIntoView({ behavior: "smooth", block: "start" })
+		setPendingScrollId(null)
+	}, [pendingScrollId, visibleCount])
+
+	const scrollToNews = (id: number, month: string, index: number) => {
+		setActiveMonth(month)
+		setVisibleCount((count) => Math.min(items.length, Math.max(count, index + 1)))
+		setPendingScrollId(id)
 	}
 
-	const staggerContainer = {
-		hidden: { opacity: 0 },
-		visible: {
-			opacity: 1,
-			transition: {
-				staggerChildren: 0.1
-			}
-		}
+	const loadMore = () => {
+		setVisibleCount((count) => Math.min(items.length, count + NEWS_PAGE_SIZE))
+	}
+
+	const fadeInUp = {
+		hidden: { opacity: 0, y: 14 },
+		visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
 	}
 
 	return (
 		<div className="relative min-h-screen bg-[var(--background)] pb-24">
 			<SubpageHeroHeader />
+			<TopNavbar trackScroll />
 
-			{/* Naavbar */}
-			<Navbar isTransparent={scrollY <= 50} />
-
-			{/* Main content */}
-			<main className="relative z-10 pt-24 px-4 max-w-4xl mx-auto pb-24">
-				{/* hEADER */}
-				<motion.div
+			<main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-24">
+				<motion.header
 					initial="hidden"
 					animate="visible"
-					variants={fadeInUpVariants}
-					className="text-center mb-12 relative"
+					variants={fadeInUp}
+					className="relative mb-12 text-center"
 				>
-					<motion.div
-						className="inline-flex items-center gap-2 bg-[#00FF88]/20 rounded-full px-4 py-1 mb-4"
-						variants={fadeInUpVariants}
-					>
-						<span className="text-[#00FF88] text-sm font-medium">What's New</span>
-					</motion.div>
-					<motion.h1
-						className="text-4xl md:text-5xl font-bold text-white mb-4 relative z-10"
-						variants={fadeInUpVariants}
-					>
+					<div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#00FF88]/20 px-4 py-1">
+						<span className="text-sm font-medium text-[#00FF88]">What's New</span>
+					</div>
+					<h1 className="relative z-10 mb-4 text-4xl font-bold text-white md:text-5xl">
 						News & Updates
-					</motion.h1>
-					<motion.p
-						className="text-lg max-w-2xl mx-auto relative z-10 text-white/[0.74]"
-						variants={fadeInUpVariants}
-					>
+					</h1>
+					<p className="relative z-10 mx-auto max-w-2xl text-lg text-white/[0.74]">
 						Stay informed about our latest news.
-					</motion.p>
-				</motion.div>
+					</p>
+				</motion.header>
 
-				{/* News feed — changelog-style timeline (panneau plus sombre) */}
-				<div
-					className="relative border border-white/[0.07] bg-[#080808] p-5 sm:p-7 md:p-8 [--news-surface:#080808]"
-				>
-					<motion.div
-						ref={ref}
-						initial="hidden"
-						animate={inView ? "visible" : "hidden"}
-						variants={staggerContainer}
-						className="relative"
-					>
-						{/* Continuous vertical axis */}
-						<div
-							className="pointer-events-none absolute left-[10px] top-2 bottom-2 w-px bg-gradient-to-b from-white/[0.06] via-white/[0.14] to-white/[0.06]"
-							aria-hidden
-						/>
-						<div className="divide-y divide-white/[0.08]">
-							{newsItems.map((item) => (
-								<motion.article
-									key={item.id}
-									variants={fadeInUpVariants}
-									className="relative py-10 pl-8 first:pt-2 last:pb-2 sm:pl-10 md:pl-11"
-								>
-									{/* Node on the timeline */}
-									<div
-										className="absolute left-0 top-[1.35rem] flex h-5 w-5 items-center justify-center sm:top-[1.6rem]"
-										aria-hidden
-									>
-										<span className="h-2.5 w-2.5 rounded-full bg-[#00FF88] shadow-[0_0_0_3px_var(--news-surface)] ring-1 ring-[#00FF88]/40 sm:h-3 sm:w-3 sm:shadow-[0_0_0_4px_var(--news-surface)]" />
-									</div>
-
-									<div className="space-y-4">
-										<div className="flex flex-wrap items-start justify-between gap-3">
-											<time className="text-sm tabular-nums text-white/[0.52]">
-												{item.date}
-											</time>
-											{item.contentType === "text" && (
-												<motion.button
+				<div className="relative lg:grid lg:grid-cols-[6.5rem_minmax(0,1fr)] lg:gap-8">
+					<aside className="relative hidden lg:block">
+						<nav
+							aria-label="Jump to date"
+							className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+						>
+							<div className="relative pl-3">
+								<div
+									className="absolute bottom-2 left-[5px] top-2 w-px bg-gradient-to-b from-white/10 via-white/20 to-white/10"
+									aria-hidden
+								/>
+								<ul className="space-y-0.5">
+									{railDates.map((entry) => {
+										const isActive = entry.month === activeMonth
+										return (
+											<li key={entry.month}>
+												<button
 													type="button"
-													className="flex cursor-pointer items-center gap-2 text-sm font-medium text-[#00FF88] transition-colors hover:text-[#00FF88]/80"
-													whileHover={{ scale: 1.02 }}
-													whileTap={{ scale: 0.98 }}
-													onClick={() => {
-														if (!expandedItems.includes(item.id) && window.gtag) {
-															window.gtag('event', 'see_more_button_news_page', {
-																event_category: 'engagement',
-																event_label: 'User clicked on See more button on a news',
-															});
-														}
-														toggleExpand(item.id);
-													}}
+													onClick={() =>
+														scrollToNews(entry.id, entry.month, entry.index)
+													}
+													className={`group relative flex w-full items-center gap-2 py-1.5 text-left text-[11px] transition-colors ${
+														isActive
+															? "text-[#00FF88]"
+															: "text-white/45 hover:text-white/80"
+													}`}
+													title={formatNewsDate(entry.date)}
 												>
-													{expandedItems.includes(item.id) ? (
-														<>
-															<span>See less</span>
-															<ChevronUp className="h-4 w-4" />
-														</>
-													) : (
-														<>
-															<span>See more</span>
-															<ChevronDown className="h-4 w-4" />
-														</>
-													)}
-												</motion.button>
-											)}
-										</div>
-										<h3 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
-											{item.title}
-										</h3>
-										{item.image ? (
-											<div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-white/[0.08] bg-white/[0.03]">
-												<Image
-													src={item.image}
-													alt={item.imageAlt ?? item.title}
-													fill
-													className="object-cover"
-													sizes="(max-width: 768px) 100vw, 56rem"
-												/>
-											</div>
-										) : null}
-										<AnimatePresence>
-											<motion.div
-												initial={{ height: 0, opacity: 0 }}
-												animate={{
-													height: expandedItems.includes(item.id) || item.contentType === "video" ? "auto" : "80px",
-													opacity: 1
-												}}
-												exit={{ height: 0, opacity: 0 }}
-												transition={{ duration: 0.3 }}
-												className="overflow-hidden"
+													<span
+														className={`absolute left-[-7px] h-1.5 w-1.5 rounded-full transition-colors ${
+															isActive
+																? "bg-[#00FF88] shadow-[0_0_0_3px_rgba(0,255,136,0.15)]"
+																: "bg-white/25 group-hover:bg-white/50"
+														}`}
+														aria-hidden
+													/>
+													<span className="pl-2 tracking-wide">{entry.label}</span>
+												</button>
+											</li>
+										)
+									})}
+								</ul>
+							</div>
+						</nav>
+					</aside>
+
+					<motion.div
+						ref={listRef}
+						initial="hidden"
+						animate={listInView ? "visible" : "hidden"}
+						variants={{
+							hidden: { opacity: 0 },
+							visible: { opacity: 1, transition: { staggerChildren: 0.04 } },
+						}}
+						className="border border-white/[0.07] bg-[#080808] px-4 sm:px-6 md:px-8"
+					>
+						<div className="divide-y divide-white/[0.08]">
+							{visibleItems.map((item, index) => {
+								const mediaLeft = index % 2 === 0
+								const hasMedia = Boolean(item.mediaType && item.mediaUrl)
+
+								return (
+									<motion.article
+										key={item.id}
+										id={`news-${item.id}`}
+										variants={fadeInUp}
+										className="group scroll-mt-28 py-10 md:py-12"
+									>
+										<Link href={`/news/${item.slug}`} className="block outline-none">
+											<div
+												className={`grid items-center gap-8 md:gap-12 ${
+													hasMedia ? "md:grid-cols-2" : ""
+												}`}
 											>
-												{item.contentType === "text" ? (
-													<div className="whitespace-pre-wrap text-sm leading-relaxed text-white/[0.72]">
-														{formatText(item.content)}
-													</div>
-												) : (
-													<div className="relative mt-2 aspect-video">
-														<iframe
-															src={item.content}
+												{hasMedia ? (
+													<div
+														className={`${mediaLeft ? "md:order-1" : "md:order-2"} overflow-hidden transition-opacity duration-300 group-hover:opacity-90`}
+													>
+														<NewsMedia
+															mediaType={item.mediaType}
+															mediaUrl={item.mediaUrl}
+															mediaAlt={item.mediaAlt}
 															title={item.title}
-															allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-															allowFullScreen
-															className="absolute inset-0 h-full w-full rounded-lg border border-white/[0.08]"
+															variant="list"
+															priority={index < 2}
 														/>
 													</div>
-												)}
-											</motion.div>
-										</AnimatePresence>
-									</div>
-								</motion.article>
-							))}
+												) : null}
+
+												<div
+													className={`space-y-4 ${
+														hasMedia
+															? mediaLeft
+																? "md:order-2"
+																: "md:order-1"
+															: ""
+													}`}
+												>
+													<NewsDateLabel date={item.date} className="block text-sm" />
+													<h2 className="font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-[#00FF88] md:text-[1.75rem]">
+														{item.title}
+													</h2>
+													{item.author ? <NewsAuthorBadge author={item.author} /> : null}
+													{item.excerpt ? (
+														<p className="max-w-xl text-sm leading-relaxed text-white/[0.9]">
+															{item.excerpt}
+														</p>
+													) : null}
+													<span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#00FF88]">
+														Read
+														<ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+													</span>
+												</div>
+											</div>
+										</Link>
+									</motion.article>
+								)
+							})}
 						</div>
+
+						{hasMore ? (
+							<div className="border-t border-white/[0.08] py-8 text-center">
+								<button
+									type="button"
+									onClick={loadMore}
+									className="inline-flex items-center border border-white/15 px-5 py-2.5 text-sm font-medium text-white/85 transition-colors hover:border-[#00FF88]/50 hover:text-[#00FF88]"
+								>
+									Load more news
+									<span className="ml-2 text-white/40">
+										({items.length - visibleCount} left)
+									</span>
+								</button>
+							</div>
+						) : null}
 					</motion.div>
 				</div>
+
+				<section className="mt-20 border border-white/[0.08] bg-[#080808] px-6 py-12 text-center md:px-12">
+					<h2 className="font-display text-2xl font-semibold text-white md:text-3xl">
+						See tomorrow, today.
+					</h2>
+					<p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/[0.85] md:text-base">
+						Follow us on LinkedIn to stay updated with the latest Altwy news, features, and innovations.
+					</p>
+					<a
+						href="https://linkedin.com/company/altwy"
+						target="_blank"
+						rel="noopener noreferrer"
+						onClick={() => {
+							if (window.gtag) {
+								window.gtag("event", "opened_linkedin_altwy_news", {
+									event_category: "engagement",
+									event_label: "LinkedIn CTA on News page",
+								})
+							}
+						}}
+						className="mt-8 inline-flex items-center gap-2 border border-neutral-800 bg-white px-6 py-3 text-sm font-medium text-neutral-900 transition-colors hover:border-[#00FF88]"
+					>
+						<Linkedin className="h-4 w-4" />
+						Follow on LinkedIn
+					</a>
+				</section>
 			</main>
 		</div>
 	)
