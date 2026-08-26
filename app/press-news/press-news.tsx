@@ -192,38 +192,61 @@ export default function PressNewsPage({ items }: { items: PressNewsListItem[] })
 							</p>
 						) : (
 							<div className="divide-y divide-white/[0.08]">
-								{visibleItems.map((item) => (
-									<motion.article
-										key={item.id}
-										id={`press-${item.id}`}
-										variants={fadeInUp}
-										className="group scroll-mt-28 py-10 md:py-12"
-									>
-										<a
-											href={item.sourceUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="block outline-none"
+								{visibleItems.map((item) => {
+									const hasLogo = Boolean(item.sourceLogo)
+
+									return (
+										<motion.article
+											key={item.id}
+											id={`press-${item.id}`}
+											variants={fadeInUp}
+											className="group scroll-mt-28 py-10 md:py-12"
 										>
-											<div className="space-y-4">
-												<NewsDateLabel date={item.date} className="block text-sm" />
-												<h2 className="font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-[#00FF88] md:text-[1.75rem]">
-													{item.title}
-												</h2>
-												<PressSourceBadge source={item.source} logo={item.sourceLogo} />
-												{item.description ? (
-													<p className="max-w-xl text-sm leading-relaxed text-white/[0.9]">
-														{item.description}
-													</p>
-												) : null}
-												<span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#00FF88]">
-												Read article
-													<ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-												</span>
-											</div>
-										</a>
-									</motion.article>
-								))}
+											<a
+												href={item.sourceUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="block outline-none"
+											>
+												<div
+													className={`grid items-center gap-8 md:gap-12 ${
+														hasLogo ? "md:grid-cols-2" : ""
+													}`}
+												>
+													<div className="space-y-4">
+														<NewsDateLabel date={item.date} className="block text-sm" />
+														<h2 className="font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-[#00FF88] md:text-[1.75rem]">
+															{item.title}
+														</h2>
+														{!hasLogo ? (
+															<PressSourceBadge source={item.source} />
+														) : null}
+														{item.description ? (
+															<p className="max-w-xl text-sm leading-relaxed text-white/[0.9]">
+																{item.description}
+															</p>
+														) : null}
+														<span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#00FF88]">
+															Read article
+															<ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+														</span>
+													</div>
+
+													{hasLogo ? (
+														<div className="flex items-center justify-center transition-opacity duration-300 group-hover:opacity-90 max-md:order-first">
+															{/* eslint-disable-next-line @next/next/no-img-element */}
+															<img
+																src={item.sourceLogo}
+																alt={item.source}
+																className="max-h-16 w-auto max-w-[70%] object-contain opacity-90 md:max-h-20"
+															/>
+														</div>
+													) : null}
+												</div>
+											</a>
+										</motion.article>
+									)
+								})}
 							</div>
 						)}
 

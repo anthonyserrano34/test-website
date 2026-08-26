@@ -207,11 +207,14 @@ export default function HomePage({
 										Altwy
 									</span>
 								</span>{" "}
-								develops innovative cloud management software on{" "}
-								<b>ARM</b>, <b>RISC-V</b>, <b>AMD</b> and{" "}
-								<b>INTEL</b>, to optimize data center operations
-								and reduce energy consumption. Built on 100%
-								European R&amp;D.
+								delivers high-performance cloud management
+								across <b>ARM</b>, <b>RISC-V</b>, <b>AMD</b>,
+								and <b>INTEL</b>. Seamlessly orchestrate
+								heterogeneous clusters or siloed servers to
+								slash energy consumption and streamline data
+								center operations.
+								<br />
+								Backed by 100% European R&amp;D.
 							</p>
 						</motion.div>
 
