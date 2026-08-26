@@ -34,7 +34,7 @@ export default function NewsListClient({ items }: { items: NewsItem[] }) {
 		<div className="space-y-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div>
-					<h1 className="text-2xl font-bold text-white">News</h1>
+					<h1 className="text-2xl font-bold text-white">Altwy News</h1>
 					<p className="mt-1 text-sm text-white/55">{items.length} published articles</p>
 				</div>
 				<Link

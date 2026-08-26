@@ -35,11 +35,16 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const gaEnabled = process.env.NEXT_PUBLIC_GA_ENABLED === "true"
+	const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""
+
 	return (
 		<html lang="en">
-			<Suspense fallback={null}>
-				<GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''} />
-			</Suspense>
+			{gaEnabled && gaMeasurementId ? (
+				<Suspense fallback={null}>
+					<GoogleAnalytics GA_MEASUREMENT_ID={gaMeasurementId} />
+				</Suspense>
+			) : null}
 			<body
 				className={`${inter.variable} ${spaceGrotesk.variable} ${galanoGrotesque.variable} antialiased`}
 			>

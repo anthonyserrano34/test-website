@@ -1,0 +1,41 @@
+[
+	{
+		"date": "2026-08-26",
+		"title": "test",
+		"description": "test",
+		"source": "TF1",
+		"sourceUrl": "https://link.altwy.fr/VirginiaCrisis-WSJ-Podcast465",
+		"sourceLogo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMTAYzor8BA1JmnWeFQ2_pbPyRz_S_ThoTEOFLrYByfIiTtA9gvloWv3Y5&s=10",
+		"featuredRank": 1,
+		"id": 4
+	},
+	{
+		"date": "2026-03-03",
+		"title": "The Grid at Breaking Point",
+		"description": "Data center expansion projects face severe power constraints worldwide, leading to cancellations and delays due to grid capacity limits.",
+		"source": "The Wall Street Journal",
+		"sourceUrl": "https://link.altwy.fr/VirginiaCrisis-WSJ-Podcast465",
+		"sourceLogo": "/press/wsj.svg",
+		"id": 1
+	},
+	{
+		"date": "2026-02-09",
+		"title": "The Geopatriation Era",
+		"description": "Sovereign Cloud spending is accelerating as enterprise IT leaders abandon 'Cloud-First' approaches to regain cost predictability and total control over data.",
+		"source": "Gartner",
+		"sourceUrl": "https://link.altwy.fr/gartner-sovereign-cloud4485",
+		"sourceLogo": "/press/gartner.svg",
+		"featuredRank": 3,
+		"id": 3
+	},
+	{
+		"date": "2025-05-23",
+		"title": "Up to 1,500% License Price Hikes",
+		"description": "Broadcom's new licensing model is forcing over 80% of organizations to actively seek alternatives and plan workload migrations.",
+		"source": "Network World",
+		"sourceUrl": "https://link.altwy.fr/price-1500percent-increase9654",
+		"sourceLogo": "/press/network-world.svg",
+		"featuredRank": 2,
+		"id": 2
+	}
+]

@@ -30,6 +30,39 @@ export function NewsDateLabel({
 	)
 }
 
+export function PressSourceBadge({
+	source,
+	logo,
+	size = "sm",
+}: {
+	source: string
+	logo?: string
+	size?: "sm" | "md"
+}) {
+	const height = size === "md" ? "h-6" : "h-5"
+
+	if (logo) {
+		return (
+			// eslint-disable-next-line @next/next/no-img-element
+			<img
+				src={logo}
+				alt={source}
+				className={`${height} w-auto max-w-[140px] object-contain object-left opacity-85`}
+			/>
+		)
+	}
+
+	return (
+		<span
+			className={`inline-flex items-center rounded-full border border-white/15 bg-white/[0.04] px-2.5 py-1 ${
+				size === "md" ? "text-sm" : "text-xs"
+			} uppercase tracking-wide text-white/70`}
+		>
+			{source}
+		</span>
+	)
+}
+
 export function NewsAuthorBadge({
 	author,
 	size = "sm",

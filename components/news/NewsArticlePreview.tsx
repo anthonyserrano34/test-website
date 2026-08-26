@@ -4,14 +4,17 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { formatNewsText } from "@/components/news/format-news-text"
-import { NewsAuthorBadge, NewsDateLabel } from "@/components/news/news-meta"
+import { NewsAuthorBadge, NewsDateLabel, PressSourceBadge } from "@/components/news/news-meta"
 import { getVideoEmbedProvider, type NewsItem } from "@/lib/news"
 
 type NewsArticlePreviewProps = {
 	item: Pick<
 		NewsItem,
 		"title" | "date" | "content" | "author" | "mediaType" | "mediaUrl" | "mediaAlt"
-	>
+	> & {
+		source?: string
+		sourceLogo?: string
+	}
 	expanded?: boolean
 	className?: string
 }
@@ -161,7 +164,11 @@ export default function NewsArticlePreview({
 				<h3 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
 					{item.title || "Untitled"}
 				</h3>
-				{item.author ? <NewsAuthorBadge author={item.author} /> : null}
+				{item.source ? (
+					<PressSourceBadge source={item.source} logo={item.sourceLogo} />
+				) : item.author ? (
+					<NewsAuthorBadge author={item.author} />
+				) : null}
 				<NewsMedia
 					mediaType={item.mediaType}
 					mediaUrl={item.mediaUrl}

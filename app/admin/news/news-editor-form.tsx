@@ -220,7 +220,7 @@ export default function NewsEditorForm({ mode, initial }: NewsEditorFormProps) {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div>
 					<h1 className="text-2xl font-bold text-white">
-						{mode === "create" ? "Add news" : "Edit news"}
+						{mode === "create" ? "Add Altwy news" : "Edit Altwy news"}
 					</h1>
 					<p className="mt-1 text-sm text-white/55">
 						Write the article, then optionally attach an image or video.

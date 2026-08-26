@@ -2,8 +2,13 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { ReactNode, useState } from "react"
+
+const TABS = [
+	{ href: "/admin/news", label: "Altwy News", match: "/admin/news" },
+	{ href: "/admin/press-news", label: "Press News", match: "/admin/press-news" },
+] as const
 
 export default function AdminShell({
 	children,
@@ -13,6 +18,7 @@ export default function AdminShell({
 	username: string
 }) {
 	const router = useRouter()
+	const pathname = usePathname()
 	const [loggingOut, setLoggingOut] = useState(false)
 
 	const logout = async () => {
@@ -25,6 +31,9 @@ export default function AdminShell({
 			setLoggingOut(false)
 		}
 	}
+
+	const pressActive = pathname.startsWith("/admin/press-news")
+	const viewHref = pressActive ? "/press-news" : "/news"
 
 	return (
 		<div className="min-h-screen bg-[var(--background)] text-white">
@@ -42,10 +51,7 @@ export default function AdminShell({
 							/>
 						</Link>
 						<nav className="flex gap-4 text-sm text-white/70">
-							<Link href="/admin/news" className="hover:text-white">
-								News
-							</Link>
-							<Link href="/news" className="hover:text-white" target="_blank">
+							<Link href={viewHref} className="hover:text-white" target="_blank">
 								View site
 							</Link>
 						</nav>
@@ -61,6 +67,26 @@ export default function AdminShell({
 							{loggingOut ? "…" : "Log out"}
 						</button>
 					</div>
+				</div>
+				<div className="mx-auto max-w-6xl px-4">
+					<nav className="flex gap-1" aria-label="News type">
+						{TABS.map((tab) => {
+							const active = pathname.startsWith(tab.match)
+							return (
+								<Link
+									key={tab.href}
+									href={tab.href}
+									className={`-mb-px border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
+										active
+											? "border-[#00FF88] text-white"
+											: "border-transparent text-white/55 hover:text-white"
+									}`}
+								>
+									{tab.label}
+								</Link>
+							)
+						})}
+					</nav>
 				</div>
 			</header>
 			<main className="mx-auto max-w-6xl px-4 py-8">{children}</main>

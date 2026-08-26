@@ -13,7 +13,8 @@ const COMPANY_LINKS: FooterLink[] = [
 ]
 
 const RESOURCES_LINKS: FooterLink[] = [
-	{ href: "/news", label: "News" },
+	{ href: "/news", label: "Altwy News" },
+	{ href: "/press-news", label: "Press News" },
 	{ href: "/contact", label: "Contact" },
 ]
 

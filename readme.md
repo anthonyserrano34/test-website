@@ -35,11 +35,12 @@ Ensure you have the following installed on your local machine:
 1. Set `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, and `ADMIN_SESSION_SECRET` in `.env.local` (see `.env.example`).
 2. Generate a password hash:
 	```bash
-	node scripts/hash-admin-password.mjs "your-secure-password"
+	node scripts/hash-admin-password.mjs "your-new-password"
 	```
-	Copy the printed `ADMIN_PASSWORD_HASH=...` line into `.env.local` (base64 form — avoids dotenv breaking `$` in bcrypt hashes).
-3. Open `http://localhost:3000/admin`, sign in, then manage news at `/admin/news`.
-4. Ensure the Node process can write to `data/` and `public/news/` (uploads + JSON).
+	Copy the printed `ADMIN_PASSWORD_HASH=...` line into `.env.local`
+3. Open `http://localhost:3000/admin`, sign in, then manage **Altwy News** at `/admin/news` and **Press News** at `/admin/press-news`.
+4. On Press News, assign homepage slots **1**, **2**, and **3** — those three articles replace the market cards on the homepage.
+5. Ensure the Node process can write to `data/` and `public/news/` (uploads + JSON).
 
 ## Deployment
 
